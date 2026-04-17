@@ -122,7 +122,7 @@ Jude 收集了约100张旧烟标（纸质烟盒），希望创建一个网站来
 | author_email | VARCHAR(100) | NOT NULL | 留言者邮箱（不公开） |
 | content | TEXT | NOT NULL | 留言正文（纯文本） |
 | quote_id | INTEGER | FK→comments.id, NULLABLE | 引用的留言ID |
-| status | VARCHAR(20) | DEFAULT 'pending' | pending/approved/rejected/hidden |
+| status | VARCHAR(20) | DEFAULT 'pending' | pending/approved/rejected/hidden/deleted |
 | created_at | TIMESTAMP | DEFAULT NOW() | 留言时间 |
 
 索引：cigar_id, status, created_at
@@ -156,10 +156,10 @@ Jude 收集了约100张旧烟标（纸质烟盒），希望创建一个网站来
 - `POST /api/admin/login` — 登录
 - `GET /api/admin/comments?status=pending` — 获取待审核留言
 - `PATCH /api/admin/comments/:id` — 审核留言（通过/拒绝/隐藏）
-- `DELETE /api/admin/comments/:id` — 删除留言
+- `DELETE /api/admin/comments/:id` — 逻辑删除留言（status改为deleted）
 - `POST /api/admin/cigars` — 添加烟标（含图片上传+水印处理）
 - `PUT /api/admin/cigars/:id` — 编辑烟标属性
-- `DELETE /api/admin/cigars/:id` — 删除烟标
+- `DELETE /api/admin/cigars/:id` — 物理删除烟标及其所有留言
 
 ## 视觉设计
 
@@ -237,6 +237,8 @@ cigar-images/
 - 所有留言需管理员审核后才公开（先审后发）
 - 支持引用同页面内其他用户的留言（单层，无嵌套）
 - 纯文本，不支持HTML或富文本
+- 单条留言删除为逻辑删除（status改为deleted），保留数据以确保引用完整
+- 删除烟标时物理删除烟标及其所有留言（烟标数据无保留意义时）
 
 ### 引用机制
 
