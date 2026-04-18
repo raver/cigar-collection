@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="night"], [data-theme="night"] *));
+
+@theme {
+  --color-ink: #2D4A3E;
+  --color-ink-light: #3D5A4E;
+  --color-moss: #4A6741;
+  --color-moss-deep: #3A5731;
+  --color-concrete: #708090;
+  --color-pale: #8A9A90;
+  --color-warm: #F5F5F0;
+  --color-parchment: #EDEDE8;
+  --color-night: #0D1A15;
+  --color-night-card: #162420;
+  --color-night-header: #111F1A;
+  --color-sea-green: #8FBC8F;
+  --color-olive: #6B8E23;
+  --color-sage: #5A6B63;
+  --color-sage-dark: #5A7A55;
+  --color-glow: #A8D5A2;
+
+  --font-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-display: 'ZCOOL XiaoWei', serif;
+  --font-handwritten: 'Ma Shan Zheng', cursive;
+}
+
+/* 全局样式 */
+body {
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+}

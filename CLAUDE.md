@@ -5,14 +5,28 @@
 
 ## 技术栈
 - **前端**: SvelteKit (TypeScript) — SSR/SSG
+- **样式**: Tailwind CSS v4（CSS-first 配置，@theme 自定义色板）
 - **后端**: Hono (TypeScript) — API 服务
+- **ORM**: Drizzle ORM（TypeScript schema 定义，自动推导类型）
 - **数据库**: PostgreSQL（复用VPS现有实例）
 - **图片存储**: Cloudflare R2（原图 + 水印版两份）
 - **部署**: Docker Compose + Nginx（腾讯云新加坡VPS）
 - **CDN/DNS**: Cloudflare
 
 ## 设计文档
-完整设计文档: `docs/superpowers/specs/2026-04-17-cigar-collection-website-design.md`
+- 完整设计文档: `docs/superpowers/specs/2026-04-17-cigar-collection-website-design.md`
+- 实施计划: `docs/superpowers/plans/2026-04-18-cigar-collection-website.md`
+
+## 设计稿（HTML mockup）
+- `homepage-v3.html` — 首页（含烟雾粒子动画 + 真实图片）
+- `gallery.html` — 图库（含灯箱放大 + 筛选）
+- `guestbook.html` — 留言墙
+- `about.html` — 关于
+
+## 字体
+- **标题**: ZCOOL XiaoWei（站酷小薇，文雅怀旧）
+- **正文**: Noto Serif SC（经典宋体，多字重）
+- **题词**: Ma Shan Zheng（马善政，手写体）
 
 ## 数据库表
 - `cigars` — 烟标元数据（name, factory, era, theme, slug, 图片路径）
