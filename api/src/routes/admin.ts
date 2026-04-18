@@ -71,13 +71,12 @@ app.post('/cigars', async (c) => {
   const { nanoid } = await import('nanoid');
   const slug = `${name.toLowerCase().replace(/[\s]+/g, '-')}-${nanoid(6)}`;
 
-  // TODO: Task 5 will replace this with actual image processing
-  const placeholderPath = `originals/${slug}.jpg`;
-  const placeholderWatermark = `watermarked/${slug}.jpg`;
+  const { processAndUpload } = await import('../services/image.js');
+  const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug);
 
   const [row] = await db.insert(cigars).values({
     name, factory, era: era as any, theme,
-    imageOriginal: placeholderPath, imageWatermarked: placeholderWatermark, slug,
+    imageOriginal: originalPath, imageWatermarked: watermarkedPath, slug,
   }).returning();
   return c.json(row, 201);
 });
