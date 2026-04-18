@@ -11,7 +11,7 @@
   <div class="aspect-square overflow-hidden">
     <img
       src={cigar.imageWatermarked}
-      alt={cigar.name}
+      alt={cigar.name + '烟标'}
       class="w-full h-full object-cover block transition-transform duration-600 hover:scale-105"
       loading="lazy"
     />

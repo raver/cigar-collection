@@ -7,7 +7,7 @@
 
 <svelte:head>
   <title>留言墙 — 烟标记忆</title>
-  <meta name="description" content="在这里留下你的记忆碎片，分享你与旧时光的故事。" />
+  <meta name="description" content="在留言墙上分享你的记忆碎片。" />
 </svelte:head>
 
 <!-- Page Hero -->

@@ -32,7 +32,7 @@
 
   function openLightbox(cigar: Cigar) {
     lightboxSrc = cigar.imageWatermarked;
-    lightboxAlt = cigar.name;
+    lightboxAlt = cigar.name + '烟标';
     lightboxName = cigar.name;
     lightboxMeta = `${cigar.factory} · ${cigar.era}`;
     lightboxOpen = true;
@@ -75,7 +75,7 @@
               <div class="aspect-square overflow-hidden">
                 <img
                   src={cigar.imageWatermarked}
-                  alt={cigar.name}
+                  alt={cigar.name + '烟标'}
                   class="w-full h-full object-cover block transition-transform duration-600 hover:scale-105"
                   loading="lazy"
                 />

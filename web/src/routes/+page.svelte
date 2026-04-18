@@ -7,6 +7,7 @@
 
 <svelte:head>
   <title>烟标记忆 — 往事如烟 岁月盲盒</title>
+  <meta name="description" content="收藏80年代的旧烟标，一段回不去的时光。烟标记忆，往事如烟，岁月盲盒。" />
 </svelte:head>
 
 <!-- Hero -->

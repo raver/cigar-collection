@@ -1,6 +1,6 @@
 <svelte:head>
   <title>关于 — 烟标记忆</title>
-  <meta name="description" content="关于这个烟标收藏，和收藏它的人。" />
+  <meta name="description" content="关于烟标记忆收藏网站和收藏者。" />
 </svelte:head>
 
 <!-- Page Hero -->

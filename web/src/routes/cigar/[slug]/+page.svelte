@@ -30,7 +30,7 @@
         >
           <img
             src={data.cigar.imageWatermarked}
-            alt={data.cigar.name}
+            alt={data.cigar.name + '烟标'}
             class="w-full block"
           />
         </div>
@@ -73,7 +73,7 @@
 
 <Lightbox
   src={data.cigar.imageWatermarked}
-  alt={data.cigar.name}
+  alt={data.cigar.name + '烟标'}
   name={data.cigar.name}
   meta={`${data.cigar.factory} · ${data.cigar.era}`}
   bind:open={lightboxOpen}
