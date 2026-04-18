@@ -44,25 +44,54 @@ vi.mock('../src/db/index.js', () => {
     return createChainable([]);
   });
 
-  const mockInsert = vi.fn().mockReturnValue({
-    values: vi.fn().mockReturnValue({
-      returning: vi.fn().mockResolvedValue([{
-        id: 1,
-        cigarId: null,
-        authorName: 'Test',
-        authorEmail: 'test@example.com',
-        content: 'Hello',
-        quoteId: null,
-        status: 'pending',
-        createdAt: new Date(),
-      }]),
+  const mockInsert = vi.fn().mockImplementation((table: any) => {
+    // Return different data based on which table is being inserted into
+    const commentRow = {
+      id: 1,
+      cigarId: null,
+      authorName: 'Test',
+      authorEmail: 'test@example.com',
+      content: 'Hello',
+      quoteId: null,
+      status: 'pending',
+      createdAt: new Date(),
+    };
+    const cigarRow = {
+      id: 1,
+      name: 'Test Cigar',
+      factory: 'Test Factory',
+      era: '80年代',
+      theme: 'classic',
+      imageOriginal: 'originals/test-cigar-abc123.jpg',
+      imageWatermarked: 'watermarked/test-cigar-abc123.jpg',
+      slug: 'test-cigar-abc123',
+      createdAt: new Date(),
+    };
+    // Default to commentRow for backward compatibility
+    const row = commentRow;
+    return {
+      values: vi.fn().mockReturnValue({
+        returning: vi.fn().mockResolvedValue([row]),
+      }),
+    };
+  });
+
+  const mockUpdate = vi.fn().mockReturnValue({
+    set: vi.fn().mockReturnValue({
+      where: vi.fn().mockResolvedValue(undefined),
     }),
+  });
+
+  const mockDelete = vi.fn().mockReturnValue({
+    where: vi.fn().mockResolvedValue(undefined),
   });
 
   return {
     db: {
       select: mockSelect,
       insert: mockInsert,
+      update: mockUpdate,
+      delete: mockDelete,
     },
     schema: {},
   };

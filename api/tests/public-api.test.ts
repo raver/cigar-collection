@@ -63,10 +63,10 @@ describe('Public API', () => {
     expect(body.authorName).toBe('Test');
   });
 
-  it('GET /admin/api returns placeholder', async () => {
+  it('GET /admin/api without auth returns 401', async () => {
     const res = await app.request('/admin/api');
-    expect(res.status).toBe(200);
-    const body = await res.json();
-    expect(body.message).toBe('Admin API placeholder');
+    // No specific route matches GET /admin/api, falls through to auth middleware on /*
+    // which returns 401 because no cookie is set
+    expect(res.status).toBe(401);
   });
 });
