@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { setCookie } from 'hono/cookie';
+import { setCookie, deleteCookie } from 'hono/cookie';
 import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
 import { admins, cigars, comments } from '../db/schema.js';
@@ -21,6 +21,12 @@ app.post('/login', async (c) => {
     httpOnly: true, secure: process.env.NODE_ENV === 'production',
     maxAge: 86400 * 7, path: '/',
   });
+  return c.json({ ok: true });
+});
+
+// POST /admin/api/logout
+app.post('/logout', (c) => {
+  deleteCookie(c, 'admin_session', { path: '/' });
   return c.json({ ok: true });
 });
 

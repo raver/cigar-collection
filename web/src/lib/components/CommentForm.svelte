@@ -14,8 +14,8 @@
     e.preventDefault();
     if (submitting || submitted) return;
 
-    if (!authorName.trim() || !content.trim()) {
-      error = '请填写姓名和留言内容';
+    if (!authorName.trim() || !authorEmail.trim() || !content.trim()) {
+      error = '请填写姓名、邮箱和留言内容';
       return;
     }
 
@@ -62,13 +62,14 @@
         />
       </div>
       <div>
-        <label for="comment-email" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">邮箱</label>
+        <label for="comment-email" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">邮箱 *</label>
         <input
           id="comment-email"
           type="email"
           bind:value={authorEmail}
+          required
           class="w-full bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2.5 font-serif text-sm text-ink dark:text-sea-green placeholder:text-pale dark:placeholder:text-sage-dark outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow"
-          placeholder="选填，不会公开"
+          placeholder="不会公开"
         />
       </div>
       <div>

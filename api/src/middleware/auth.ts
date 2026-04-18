@@ -16,7 +16,11 @@ function verifyToken(token: string): string | null {
   const payload = token.substring(0, dotIndex);
   const sig = token.substring(dotIndex + 1);
   const expected = signToken(payload);
-  if (token !== expected) return null;
+  const expectedSig = expected.substring(dotIndex + 1);
+  const sigBuf = Buffer.from(sig);
+  const expectedBuf = Buffer.from(expectedSig);
+  if (sigBuf.length !== expectedBuf.length) return null;
+  if (!crypto.timingSafeEqual(sigBuf, expectedBuf)) return null;
   return payload;
 }
 

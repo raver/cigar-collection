@@ -10,7 +10,10 @@ import adminRoutes from './routes/admin.js';
 const app = new Hono();
 
 app.use('/api/*', cors());
-app.use('/admin/api/*', cors());
+app.use('/admin/api/*', cors({
+  origin: process.env.ADMIN_ORIGIN || 'https://yourdomain.com',
+  credentials: true,
+}));
 
 // Health check
 app.get('/api/health', (c) => c.json({ ok: true }));

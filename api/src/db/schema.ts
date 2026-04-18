@@ -28,11 +28,11 @@ export const cigars = pgTable('cigars', {
 // 留言表
 export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),
-  cigarId: integer('cigar_id').references(() => cigars.id, { onDelete: 'cascade' }),
+  cigarId: integer('cigar_id').references((): any => cigars.id, { onDelete: 'cascade' }),
   authorName: varchar('author_name', { length: 50 }).notNull(),
   authorEmail: varchar('author_email', { length: 100 }).notNull(),
   content: text('content').notNull(),
-  quoteId: integer('quote_id').references(() => comments.id, { onDelete: 'set null' }),
+  quoteId: integer('quote_id').references((): any => comments.id, { onDelete: 'set null' }),
   status: commentStatusEnum('status').default('pending').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });

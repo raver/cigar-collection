@@ -2,7 +2,7 @@ import type { RequestHandler } from './$types';
 import { api } from '$lib/api.js';
 
 export const GET: RequestHandler = async () => {
-  const baseUrl = 'https://yourdomain.com';
+  const baseUrl = process.env.PUBLIC_SITE_URL || 'https://yourdomain.com';
   let cigarUrls = '';
 
   try {

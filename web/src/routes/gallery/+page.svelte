@@ -93,14 +93,9 @@
         {/each}
       </div>
 
-      <!-- Pagination placeholder -->
-      <div class="flex justify-center gap-1.5 mt-10">
-        <button class="w-9 h-9 flex items-center justify-center border border-ink/12 dark:border-sea-green/12 rounded bg-white dark:bg-night-card text-pale dark:text-sage-dark text-sm cursor-pointer transition-all duration-300 hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night">&larr;</button>
-        <button class="w-9 h-9 flex items-center justify-center border border-ink/12 dark:border-sea-green/12 rounded bg-moss text-white text-sm cursor-pointer">1</button>
-        <button class="w-9 h-9 flex items-center justify-center border border-ink/12 dark:border-sea-green/12 rounded bg-white dark:bg-night-card text-pale dark:text-sage-dark text-sm cursor-pointer transition-all duration-300 hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night">2</button>
-        <button class="w-9 h-9 flex items-center justify-center border border-ink/12 dark:border-sea-green/12 rounded bg-white dark:bg-night-card text-pale dark:text-sage-dark text-sm cursor-pointer transition-all duration-300 hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night">3</button>
-        <button class="w-9 h-9 flex items-center justify-center border border-ink/12 dark:border-sea-green/12 rounded bg-white dark:bg-night-card text-pale dark:text-sage-dark text-sm cursor-pointer transition-all duration-300 hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night">&rarr;</button>
-      </div>
+      {#if filtered.length > 0}
+        <div class="text-center mt-10 text-xs text-pale dark:text-sage-dark tracking-wider">共 {filtered.length} 枚烟标</div>
+      {/if}
     {/if}
   </div>
 </section>
