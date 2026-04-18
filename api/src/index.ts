@@ -1,23 +1,31 @@
-import { serve } from '@hono/node-server';
+import 'dotenv/config';
 import { Hono } from 'hono';
+import { serve } from '@hono/node-server';
 import { cors } from 'hono/cors';
+import cigarsRoutes from './routes/cigars.js';
+import commentsRoutes from './routes/comments.js';
+import guestbookRoutes from './routes/guestbook.js';
+import adminRoutes from './routes/admin.js';
 
 const app = new Hono();
 
-app.use('*', cors());
+app.use('/api/*', cors());
+app.use('/admin/api/*', cors());
 
-app.get('/', (c) => {
-  return c.json({ message: 'Cigar API is running' });
-});
+// Health check
+app.get('/api/health', (c) => c.json({ ok: true }));
 
-app.get('/api/health', (c) => {
-  return c.json({ status: 'ok' });
-});
+// Public routes
+app.route('/api/cigars', cigarsRoutes);
+app.route('/api', commentsRoutes);
+app.route('/api', guestbookRoutes);
 
-const port = Number(process.env.API_PORT) || 3001;
+// Admin routes (will be implemented in Task 4)
+app.route('/admin/api', adminRoutes);
 
-serve({ fetch: app.fetch, port }, (info) => {
-  console.log(`API server running on http://localhost:${info.port}`);
+const port = parseInt(process.env.API_PORT || '3001');
+serve({ fetch: app.fetch, port }, () => {
+  console.log(`API server running on port ${port}`);
 });
 
 export default app;

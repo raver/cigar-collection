@@ -2,9 +2,17 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import * as schema from './schema.js';
 
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+let db: ReturnType<typeof drizzle>;
 
-export const db = drizzle(pool, { schema });
-export { schema };
+if (process.env.DATABASE_URL) {
+  const pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+  });
+  db = drizzle(pool, { schema });
+} else {
+  // Fallback: use a dummy client that won't crash module imports
+  // Actual DB queries will fail with a clear error if no DATABASE_URL is set
+  db = drizzle(new pg.Pool(), { schema });
+}
+
+export { db, schema };
