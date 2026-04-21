@@ -9,6 +9,7 @@
     content: string;
     status: string;
     createdAt: string;
+    quote?: { id: number; authorName: string; content: string } | null;
   }
 
   type TabStatus = 'pending' | 'approved' | 'rejected';
@@ -133,6 +134,18 @@
             </div>
             <span class="text-xs text-concrete dark:text-pale">{formatDate(comment.createdAt)}</span>
           </div>
+
+          <!-- Quote block -->
+          {#if comment.quote}
+            <div class="border-l-2 border-moss dark:border-sea-green bg-parchment dark:bg-night-header rounded-r p-3 mb-3">
+              <div class="text-xs text-pale dark:text-sage-dark tracking-wider mb-1">
+                引用 @{comment.quote.authorName}
+              </div>
+              <div class="text-sm text-sage dark:text-sea-green/80 tracking-wide">
+                {comment.quote.content}
+              </div>
+            </div>
+          {/if}
 
           <!-- Comment content -->
           <p class="text-sm text-ink/80 dark:text-sea-green/80 leading-relaxed mb-3">{comment.content}</p>

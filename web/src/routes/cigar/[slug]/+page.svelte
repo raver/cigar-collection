@@ -2,10 +2,23 @@
   import Lightbox from '$lib/components/Lightbox.svelte';
   import CommentList from '$lib/components/CommentList.svelte';
   import CommentForm from '$lib/components/CommentForm.svelte';
+  import type { Comment } from '$lib/api.js';
 
   let { data }: { data: { cigar: import('$lib/api.js').Cigar; comments: import('$lib/api.js').Comment[] } } = $props();
 
   let lightboxOpen = $state(false);
+  let commentForm: CommentForm | undefined;
+  let quoteComment: Comment | null = $state(null);
+
+  function handleQuote(comment: Comment) {
+    quoteComment = comment;
+    commentForm?.setQuote(comment);
+  }
+
+  function handleCancelQuote() {
+    quoteComment = null;
+    commentForm?.cancelQuote();
+  }
 </script>
 
 <svelte:head>
@@ -64,8 +77,8 @@
 
         <!-- Comments -->
         <h3 class="font-serif font-bold text-lg text-ink dark:text-sea-green tracking-wider mb-4">留言</h3>
-        <CommentList comments={data.comments} />
-        <CommentForm cigarId={data.cigar.id} />
+        <CommentList comments={data.comments} onQuote={handleQuote} />
+        <CommentForm bind:this={commentForm} cigarId={data.cigar.id} {quoteComment} />
       </div>
     </div>
   </div>

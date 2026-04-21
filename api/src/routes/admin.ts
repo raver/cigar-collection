@@ -3,7 +3,7 @@ import { setCookie, deleteCookie } from 'hono/cookie';
 import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
 import { admins, cigars, comments } from '../db/schema.js';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, inArray } from 'drizzle-orm';
 import { authMiddleware, createSession } from '../middleware/auth.js';
 
 const app = new Hono();
@@ -39,7 +39,27 @@ app.get('/comments', async (c) => {
   const rows = await db.select().from(comments)
     .where(eq(comments.status, status as any))
     .orderBy(desc(comments.createdAt));
-  return c.json(rows);
+
+  // 获取所有被引用的留言
+  const quoteIds = rows.map(r => r.quoteId).filter((id): id is number => id !== null);
+  const quotes = quoteIds.length > 0
+    ? await db.select({
+        id: comments.id,
+        authorName: comments.authorName,
+        content: comments.content,
+      }).from(comments)
+      .where(inArray(comments.id, quoteIds))
+    : [];
+
+  const quoteMap = new Map(quotes.map(q => [q.id, q]));
+
+  // 组装引用信息
+  const result = rows.map(row => ({
+    ...row,
+    quote: row.quoteId ? quoteMap.get(row.quoteId) ?? null : null,
+  }));
+
+  return c.json(result);
 });
 
 // PATCH /admin/api/comments/:id — 审核
@@ -75,7 +95,14 @@ app.post('/cigars', async (c) => {
   }
 
   const { nanoid } = await import('nanoid');
-  const slug = `${name.toLowerCase().replace(/[\s]+/g, '-')}-${nanoid(6)}`;
+  const { pinyin } = await import('pinyin-pro');
+  // 将中文名转换为拼音，移除空格和特殊字符
+  const namePinyin = pinyin(name, { toneType: 'none', type: 'array' })
+    .join('-')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-');
+  const slug = `${namePinyin}-${nanoid(6)}`;
 
   const { processAndUpload } = await import('../services/image.js');
   const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug);

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { api } from '$lib/api.js';
+  import type { Comment } from '$lib/api.js';
 
-  let { cigarId }: { cigarId: number | null } = $props();
+  let { cigarId, quoteComment }: { cigarId: number | null; quoteComment?: Comment | null } = $props();
 
   let authorName = $state('');
   let authorEmail = $state('');
@@ -9,6 +10,7 @@
   let submitting = $state(false);
   let submitted = $state(false);
   let error = $state('');
+  let quote = $state<Comment | null>(quoteComment ?? null);
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
@@ -28,16 +30,26 @@
         author_name: authorName.trim(),
         author_email: authorEmail.trim(),
         content: content.trim(),
+        quote_id: quote?.id ?? undefined,
       });
       submitted = true;
       authorName = '';
       authorEmail = '';
       content = '';
+      quote = null;
     } catch {
       error = '提交失败，请稍后再试';
     } finally {
       submitting = false;
     }
+  }
+
+  export function setQuote(comment: Comment) {
+    quote = comment;
+  }
+
+  export function cancelQuote() {
+    quote = null;
   }
 </script>
 
@@ -50,6 +62,26 @@
     </div>
   {:else}
     <form onsubmit={handleSubmit} class="space-y-4">
+      {#if quote}
+        <div class="border-l-2 border-moss dark:border-sea-green bg-parchment dark:bg-night-header rounded-r p-3 mb-4 flex justify-between items-start gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="text-xs text-pale dark:text-sage-dark tracking-wider mb-1">
+              引用 @{quote.authorName}
+            </div>
+            <div class="text-sm text-sage dark:text-sea-green/80 tracking-wide line-clamp-2">
+              {quote.content}
+            </div>
+          </div>
+          <button
+            type="button"
+            onclick={() => quote = null}
+            class="text-pale dark:text-sage-dark hover:text-red-600 dark:hover:text-red-400 text-sm"
+            aria-label="取消引用"
+          >
+            ✕
+          </button>
+        </div>
+      {/if}
       <div>
         <label for="comment-name" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">姓名 *</label>
         <input

@@ -1,8 +1,22 @@
 <script lang="ts">
   import CommentForm from '$lib/components/CommentForm.svelte';
   import CommentList from '$lib/components/CommentList.svelte';
+  import type { Comment } from '$lib/api.js';
 
   let { data }: { data: { comments: import('$lib/api.js').Comment[]; total: number; page: number; totalPages: number } } = $props();
+
+  let commentForm: CommentForm | undefined;
+  let quoteComment: Comment | null = $state(null);
+
+  function handleQuote(comment: Comment) {
+    quoteComment = comment;
+    commentForm?.setQuote(comment);
+  }
+
+  function handleCancelQuote() {
+    quoteComment = null;
+    commentForm?.cancelQuote();
+  }
 </script>
 
 <svelte:head>
@@ -22,7 +36,7 @@
 <!-- Comment Form -->
 <section class="px-6 pt-10 pb-8 transition-colors duration-500">
   <div class="max-w-[660px] mx-auto">
-    <CommentForm cigarId={null} />
+    <CommentForm bind:this={commentForm} cigarId={null} {quoteComment} />
   </div>
 </section>
 
@@ -33,7 +47,7 @@
 <section class="px-6 pb-16 transition-colors duration-500">
   <div class="max-w-[660px] mx-auto">
     <h2 class="font-serif font-semibold text-lg text-ink dark:text-sea-green tracking-wider mb-7">留言 · {data.total}</h2>
-    <CommentList comments={data.comments} />
+    <CommentList comments={data.comments} onQuote={handleQuote} />
 
     {#if data.totalPages > 1}
       <div class="flex justify-center items-center gap-4 mt-10">

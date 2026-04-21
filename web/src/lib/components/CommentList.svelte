@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Comment } from '$lib/api.js';
 
-  let { comments }: { comments: Comment[] } = $props();
+  let { comments, onQuote }: { comments: Comment[]; onQuote?: (comment: Comment) => void } = $props();
 
   function formatDate(dateStr: string): string {
     const d = new Date(dateStr);
@@ -28,13 +28,24 @@
         {/if}
 
         <!-- Comment content -->
-        <div class="font-serif text-sm text-ink dark:text-sea-green tracking-wide leading-relaxed whitespace-pre-wrap">
+        <div class="font-serif text-sm text-ink dark:text-sea-green tracking-wide leading-relaxed whitespace-pre-wrap mb-3">
           {comment.content}
         </div>
 
-        <div class="flex items-center gap-3 mt-3 text-xs text-pale dark:text-sage-dark tracking-wider">
-          <span class="font-semibold">{comment.authorName}</span>
-          <span>{formatDate(comment.createdAt)}</span>
+        <div class="flex items-center justify-between">
+          <div class="text-xs text-pale dark:text-sage-dark tracking-wider">
+            <span class="font-semibold">{comment.authorName}</span>
+            <span class="mx-2">·</span>
+            <span>{formatDate(comment.createdAt)}</span>
+          </div>
+          {#if onQuote}
+            <button
+              onclick={() => onQuote(comment)}
+              class="text-xs text-moss dark:text-sea-green hover:underline tracking-wider"
+            >
+              引用
+            </button>
+          {/if}
         </div>
       </div>
     {/each}

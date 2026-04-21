@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { db } from './index.js';
 import { admins } from './schema.js';
+import { eq } from 'drizzle-orm';
 
 async function seed() {
   const username = process.env.ADMIN_USERNAME || 'admin';
@@ -14,7 +15,7 @@ async function seed() {
   }
 
   // 检查是否已存在
-  const existing = await db.select().from(admins).where((users) => users.username === username);
+  const existing = await db.select().from(admins).where(eq(admins.username, username));
   if (existing.length > 0) {
     console.log(`ℹ️  管理员 "${username}" 已存在，跳过创建`);
     return;
