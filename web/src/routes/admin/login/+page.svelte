@@ -13,15 +13,20 @@
       const res = await fetch('/admin/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
+      console.log('login response:', res.status, data);
       if (!res.ok) {
         error = data.error || '登录失败';
         return;
       }
-      goto('/admin');
-    } catch {
+      console.log('about to goto /admin');
+      await goto('/admin');
+      console.log('goto returned');
+    } catch (err) {
+      console.error('login error:', err);
       error = '网络错误，请重试';
     } finally {
       loading = false;

@@ -130,7 +130,7 @@
         this.y = canvas.height + Math.random() * 120;
         this.baseSize = 30 + Math.random() * 50;
         this.size = this.baseSize;
-        this.maxAlpha = 12 + Math.random() * 23;
+        this.maxAlpha = (12 + Math.random() * 23) / 255;
         this.alpha = 0;
         this.vy = 0.2 + Math.random() * 0.5;
         this.drift = (Math.random() - 0.5) * 0.4;

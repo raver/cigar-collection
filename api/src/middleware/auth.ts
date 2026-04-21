@@ -29,7 +29,7 @@ export function createSession(username: string): string {
 }
 
 export const authMiddleware = createMiddleware(async (c, next) => {
-  const token = getCookie(c, 'admin_session');
+  const token = getCookie(c, 'cigar_session');
   if (!token) return c.json({ error: 'Unauthorized' }, 401);
   const username = verifyToken(token);
   if (!username) return c.json({ error: 'Invalid session' }, 401);

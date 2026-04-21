@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
 
-  let children: any = $props();
+  let { children } = $props();
 
   const isLoginPage = $derived(page.url.pathname === '/admin/login');
 

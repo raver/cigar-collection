@@ -1,12 +1,29 @@
 services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cigar
+      POSTGRES_USER: cigar
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_cigar_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cigar"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   cigar-api:
     build: ./api
     restart: unless-stopped
     env_file: .env
     environment:
       NODE_ENV: production
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      DATABASE_URL: postgresql://cigar:${DB_PASSWORD}@postgres:5432/cigar
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   cigar-web:
     build: ./web
@@ -24,3 +41,6 @@ services:
     depends_on:
       - cigar-api
       - cigar-web
+
+volumes:
+  postgres_cigar_data:

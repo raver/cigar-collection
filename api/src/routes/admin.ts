@@ -17,7 +17,7 @@ app.post('/login', async (c) => {
   const valid = await bcrypt.compare(password, admin.passwordHash);
   if (!valid) return c.json({ error: 'Invalid credentials' }, 401);
   const token = createSession(username);
-  setCookie(c, 'admin_session', token, {
+  setCookie(c, 'cigar_session', token, {
     httpOnly: true, secure: process.env.NODE_ENV === 'production',
     maxAge: 86400 * 7, path: '/',
   });
@@ -26,7 +26,7 @@ app.post('/login', async (c) => {
 
 // POST /admin/api/logout
 app.post('/logout', (c) => {
-  deleteCookie(c, 'admin_session', { path: '/' });
+  deleteCookie(c, 'cigar_session', { path: '/' });
   return c.json({ ok: true });
 });
 

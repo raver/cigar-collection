@@ -75,16 +75,3 @@
     </div>
   {/if}
 </section>
-
-<style>
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(22px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>
