@@ -14,11 +14,14 @@
   let cigars: CigarItem[] = $state([]);
   let loading = $state(true);
   let error = $state('');
+  let sortMessage = $state('');
   let deletingId: number | null = $state(null);
+  let sortingAll = $state(false);
 
   async function loadCigars() {
     try {
-      const res = await fetch('/api/cigars');
+      error = '';
+      const res = await fetch('/admin/api/cigars');
       if (!res.ok) throw new Error();
       cigars = await res.json();
     } catch {
@@ -42,6 +45,29 @@
     }
   }
 
+  async function sortAllByName() {
+    if (!confirm('这会为现有烟标重建名称排序键，并按名称重新排列列表。是否继续？')) return;
+
+    sortingAll = true;
+    error = '';
+    sortMessage = '';
+
+    try {
+      const res = await fetch('/admin/api/cigars/sort-by-name', { method: 'POST' });
+      if (!res.ok) throw new Error();
+
+      const data = await res.json() as { updatedCount?: number };
+      await loadCigars();
+      sortMessage = data.updatedCount
+        ? `已更新 ${data.updatedCount} 条烟标的排序键，列表已按名称重排。`
+        : '排序键已经是最新状态，列表已按名称展示。';
+    } catch {
+      error = '按名称排序失败，请重试';
+    } finally {
+      sortingAll = false;
+    }
+  }
+
   onMount(loadCigars);
 </script>
 
@@ -50,18 +76,39 @@
 </svelte:head>
 
 <div class="p-6 md:p-8">
-  <div class="flex items-center justify-between mb-6">
+  <div class="flex flex-col gap-4 mb-6 md:flex-row md:items-start md:justify-between">
     <h1 class="font-display text-2xl text-ink dark:text-sea-green tracking-widest">烟标管理</h1>
-    <a
-      href="/admin/cigars/new"
-      class="px-4 py-2 bg-moss dark:bg-sea-green text-warm dark:text-night text-sm tracking-wider rounded hover:bg-moss-deep dark:hover:bg-glow transition-colors"
-    >
-      + 添加烟标
-    </a>
+
+    <div class="flex flex-col items-start gap-2 md:items-end">
+      <div class="flex flex-wrap gap-2">
+        <button
+          onclick={sortAllByName}
+          disabled={sortingAll || loading || cigars.length === 0}
+          class="px-4 py-2 border border-moss/30 dark:border-sea-green/30 text-moss dark:text-sea-green text-sm tracking-wider rounded hover:bg-moss/8 dark:hover:bg-sea-green/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          {sortingAll ? '排序中...' : '按名称排序全部烟标'}
+        </button>
+
+        <a
+          href="/admin/cigars/new"
+          class="px-4 py-2 bg-moss dark:bg-sea-green text-warm dark:text-night text-sm tracking-wider rounded hover:bg-moss-deep dark:hover:bg-glow transition-colors"
+        >
+          + 添加烟标
+        </a>
+      </div>
+
+      <p class="text-xs text-concrete dark:text-pale tracking-wider">
+        首次使用会为历史数据补齐拼音排序键，后续新增和改名会自动维护。
+      </p>
+    </div>
   </div>
 
   {#if error}
     <p class="text-sm text-red-600 dark:text-red-400">{error}</p>
+  {/if}
+
+  {#if sortMessage}
+    <p class="mb-4 text-sm text-moss dark:text-sea-green">{sortMessage}</p>
   {/if}
 
   {#if loading}

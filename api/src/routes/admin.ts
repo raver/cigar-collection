@@ -3,8 +3,9 @@ import { setCookie, deleteCookie } from 'hono/cookie';
 import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
 import { admins, cigars, comments } from '../db/schema.js';
-import { eq, desc, inArray } from 'drizzle-orm';
+import { asc, desc, eq, inArray } from 'drizzle-orm';
 import { authMiddleware, createSession } from '../middleware/auth.js';
+import { buildCigarNameSortKey } from '../services/cigar-sort.js';
 
 const app = new Hono();
 
@@ -32,6 +33,21 @@ app.post('/logout', (c) => {
 
 // All routes below require auth
 app.use('/*', authMiddleware);
+
+// GET /admin/api/cigars — 按名称排序后的烟标列表
+app.get('/cigars', async (c) => {
+  const rows = await db.select({
+    id: cigars.id,
+    name: cigars.name,
+    factory: cigars.factory,
+    era: cigars.era,
+    theme: cigars.theme,
+    slug: cigars.slug,
+    imageWatermarked: cigars.imageWatermarked,
+  }).from(cigars).orderBy(asc(cigars.nameSortKey), asc(cigars.id));
+
+  return c.json(rows);
+});
 
 // GET /admin/api/comments?status=pending
 app.get('/comments', async (c) => {
@@ -95,23 +111,46 @@ app.post('/cigars', async (c) => {
   }
 
   const { nanoid } = await import('nanoid');
-  const { pinyin } = await import('pinyin-pro');
-  // 将中文名转换为拼音，移除空格和特殊字符
-  const namePinyin = pinyin(name, { toneType: 'none', type: 'array' })
-    .join('-')
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '')
-    .replace(/-+/g, '-');
-  const slug = `${namePinyin}-${nanoid(6)}`;
+  const nameSortKey = buildCigarNameSortKey(name);
+  const slugBase = nameSortKey || 'cigar';
+  const slug = `${slugBase}-${nanoid(6)}`;
 
   const { processAndUpload } = await import('../services/image.js');
   const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug);
 
   const [row] = await db.insert(cigars).values({
-    name, factory, era: era as any, theme,
+    name, nameSortKey, factory, era: era as any, theme,
     imageOriginal: originalPath, imageWatermarked: watermarkedPath, slug,
   }).returning();
   return c.json(row, 201);
+});
+
+// POST /admin/api/cigars/sort-by-name — 为全部烟标重建名称排序键和 slug
+app.post('/cigars/sort-by-name', async (c) => {
+  const rows = await db.select({
+    id: cigars.id,
+    name: cigars.name,
+    nameSortKey: cigars.nameSortKey,
+    slug: cigars.slug,
+  }).from(cigars);
+
+  let updatedCount = 0;
+
+  for (const row of rows) {
+    const nextSortKey = buildCigarNameSortKey(row.name);
+    if (nextSortKey === row.nameSortKey) continue;
+
+    const lastDashIndex = row.slug.lastIndexOf('-');
+    const nanoidPart = lastDashIndex >= 0 ? row.slug.slice(lastDashIndex) : `-${Math.random().toString(36).slice(2, 8)}`;
+    const newSlug = nextSortKey + nanoidPart;
+
+    await db.update(cigars)
+      .set({ nameSortKey: nextSortKey, slug: newSlug })
+      .where(eq(cigars.id, row.id));
+    updatedCount += 1;
+  }
+
+  return c.json({ ok: true, updatedCount });
 });
 
 // PUT /admin/api/cigars/:id — 编辑属性
@@ -120,6 +159,19 @@ app.put('/cigars/:id', async (c) => {
   const updates: Record<string, unknown> = {};
   for (const key of ['name', 'factory', 'era', 'theme'] as const) {
     if (body[key] !== undefined) updates[key] = body[key];
+  }
+  if (typeof body.name === 'string') {
+    updates.nameSortKey = buildCigarNameSortKey(body.name);
+
+    const [existing] = await db.select({ slug: cigars.slug })
+      .from(cigars)
+      .where(eq(cigars.id, parseInt(c.req.param('id'))));
+
+    if (existing) {
+      const lastDashIndex = existing.slug.lastIndexOf('-');
+      const nanoidPart = lastDashIndex >= 0 ? existing.slug.slice(lastDashIndex) : `-${Math.random().toString(36).slice(2, 8)}`;
+      updates.slug = updates.nameSortKey + nanoidPart;
+    }
   }
   if (Object.keys(updates).length === 0) return c.json({ error: 'No fields to update' }, 400);
   await db.update(cigars).set(updates as any)

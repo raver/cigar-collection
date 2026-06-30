@@ -30,6 +30,18 @@ describe('Admin API', () => {
     expect(res.status).toBe(401);
   });
 
+  it('GET /admin/api/cigars without auth returns 401', async () => {
+    const res = await app.request('/admin/api/cigars');
+    expect(res.status).toBe(401);
+  });
+
+  it('POST /admin/api/cigars/sort-by-name without auth returns 401', async () => {
+    const res = await app.request('/admin/api/cigars/sort-by-name', {
+      method: 'POST',
+    });
+    expect(res.status).toBe(401);
+  });
+
   it('PATCH /admin/api/comments/1 without auth returns 401', async () => {
     const res = await app.request('/admin/api/comments/1', {
       method: 'PATCH',

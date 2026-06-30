@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, timestamp, integer, pgEnum } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, text, timestamp, integer, pgEnum, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // Enums
@@ -16,6 +16,7 @@ export const admins = pgTable('admins', {
 export const cigars = pgTable('cigars', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
+  nameSortKey: varchar('name_sort_key', { length: 255 }),
   factory: varchar('factory', { length: 100 }).notNull(),
   era: eraEnum('era').notNull(),
   theme: varchar('theme', { length: 50 }).notNull(),
@@ -23,7 +24,9 @@ export const cigars = pgTable('cigars', {
   imageWatermarked: varchar('image_watermarked', { length: 255 }).notNull(),
   slug: varchar('slug', { length: 100 }).unique().notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-});
+}, (table) => ({
+  nameSortKeyIdx: index('cigars_name_sort_key_idx').on(table.nameSortKey, table.id),
+}));
 
 // 留言表
 export const comments = pgTable('comments', {
