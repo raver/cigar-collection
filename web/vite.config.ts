@@ -2,12 +2,14 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
+const apiTarget = process.env.API_TARGET || 'http://localhost:3001';
+
 export default defineConfig({
   plugins: [tailwindcss(), sveltekit()],
   server: {
     proxy: {
-      '/api': 'http://localhost:3001',
-      '/admin/api': 'http://localhost:3001',
+      '/api': apiTarget,
+      '/admin/api': apiTarget,
     }
   }
 });

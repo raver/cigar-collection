@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cigar
+      POSTGRES_USER: cigar
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_cigar_data_dev:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cigar"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cigar-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    volumes:
+      - ./api/src:/app/src
+      - ./api/drizzle:/app/drizzle
+      - ./api/drizzle.config.ts:/app/drizzle.config.ts
+    env_file: .env
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://cigar:${DB_PASSWORD}@postgres:5432/cigar
+      # $$ 转义，防止 Docker Compose 把 $ 当成变量引用
+      ADMIN_PASSWORD_HASH: "$$2a$$10$$mnhiBcUa0QT/p0GuZ5Anieae6P1B2NTuVt50EW1z/WK.X.unHRtmC"
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  cigar-web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    volumes:
+      - ./web/src:/app/src
+      - ./web/static:/app/static
+      - ./web/svelte.config.js:/app/svelte.config.js
+      - ./web/vite.config.ts:/app/vite.config.ts
+    environment:
+      API_TARGET: http://cigar-api:3001
+      VITE_API_URL: http://cigar-api:3001
+    ports:
+      - "5173:5173"
+    depends_on:
+      - cigar-api
+
+volumes:
+  postgres_cigar_data_dev:

@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: cigar
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - postgres_cigar_data:/var/lib/postgresql/data
+      - postgres_cigar_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U cigar"]
       interval: 5s
