@@ -16,8 +16,17 @@
     e.preventDefault();
     if (submitting || submitted) return;
 
-    if (!authorName.trim() || !authorEmail.trim() || !content.trim()) {
-      error = '请填写姓名、邮箱和留言内容';
+    if (!authorName.trim()) {
+      error = '请输入姓名';
+      return;
+    }
+    if (!content.trim()) {
+      error = '请输入留言内容';
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (authorEmail.trim() && !emailRegex.test(authorEmail.trim())) {
+      error = '邮箱格式不正确';
       return;
     }
 
@@ -28,7 +37,7 @@
       await api.postComment({
         cigar_id: cigarId,
         author_name: authorName.trim(),
-        author_email: authorEmail.trim(),
+        author_email: authorEmail.trim() || undefined,
         content: content.trim(),
         quote_id: quote?.id ?? undefined,
       });
@@ -37,8 +46,15 @@
       authorEmail = '';
       content = '';
       quote = null;
-    } catch {
-      error = '提交失败，请稍后再试';
+    } catch (err) {
+      if (err instanceof Response) {
+        try { const body = await err.clone().json(); error = body.error || '提交失败，请稍后再试'; }
+        catch { error = '提交失败，请稍后再试'; }
+      } else if (err instanceof Error) {
+        error = err.message || '提交失败，请稍后再试';
+      } else {
+        error = '提交失败，请稍后再试';
+      }
     } finally {
       submitting = false;
     }
@@ -94,14 +110,13 @@
         />
       </div>
       <div>
-        <label for="comment-email" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">邮箱 *</label>
+        <label for="comment-email" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">邮箱</label>
         <input
           id="comment-email"
           type="email"
           bind:value={authorEmail}
-          required
           class="w-full bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2.5 font-serif text-sm text-ink dark:text-sea-green placeholder:text-pale dark:placeholder:text-sage-dark outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow"
-          placeholder="不会公开"
+          placeholder="不会公开，选填"
         />
       </div>
       <div>

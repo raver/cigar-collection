@@ -9,7 +9,7 @@ const app = new Hono();
 const commentSchema = z.object({
   cigar_id: z.number().nullable().optional(),
   author_name: z.string().min(1).max(50),
-  author_email: z.string().email().max(100),
+  author_email: z.string().email().max(100).optional().nullable().or(z.literal('')),
   content: z.string().min(1).max(1000),
   quote_id: z.number().nullable().optional(),
 });
@@ -21,14 +21,23 @@ app.post('/comments', async (c) => {
   if (!parsed.success) return c.json({ error: parsed.error.flatten() }, 400);
 
   const { cigar_id, author_name, author_email, content, quote_id } = parsed.data;
-  const [row] = await db.insert(comments).values({
-    cigarId: cigar_id ?? null,
-    authorName: author_name,
-    authorEmail: author_email,
-    content,
-    quoteId: quote_id ?? null,
-  }).returning();
-  return c.json(row, 201);
+  const email = author_email && typeof author_email === 'string' && author_email.trim()
+    ? author_email.trim()
+    : null;
+
+  try {
+    const [row] = await db.insert(comments).values({
+      cigarId: cigar_id ?? null,
+      authorName: author_name,
+      authorEmail: email,
+      content,
+      quoteId: quote_id ?? null,
+    }).returning();
+    return c.json(row, 201);
+  } catch (err) {
+    console.error('Comment insert failed:', err);
+    return c.json({ error: '留言提交失败，请稍后再试。如果问题持续，请联系管理员。' }, 500);
+  }
 });
 
 // GET /cigars/:id/comments — 某烟标的已审核留言

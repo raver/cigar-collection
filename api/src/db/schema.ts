@@ -33,7 +33,7 @@ export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),
   cigarId: integer('cigar_id').references((): any => cigars.id, { onDelete: 'cascade' }),
   authorName: varchar('author_name', { length: 50 }).notNull(),
-  authorEmail: varchar('author_email', { length: 100 }).notNull(),
+  authorEmail: varchar('author_email', { length: 100 }),
   content: text('content').notNull(),
   quoteId: integer('quote_id').references((): any => comments.id, { onDelete: 'set null' }),
   status: commentStatusEnum('status').default('pending').notNull(),

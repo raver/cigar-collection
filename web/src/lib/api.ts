@@ -33,7 +33,7 @@ export const api = {
   getCigar: (slug: string) => fetchApi<Cigar>(`/api/cigars/${slug}`),
   getCigarComments: (id: number) => fetchApi<Comment[]>(`/api/cigars/${id}/comments`),
   getGuestbook: (page = 1) => fetchApi<{ comments: Comment[]; total: number; page: number; totalPages: number }>(`/api/guestbook?page=${page}`),
-  postComment: (data: { cigar_id?: number | null; author_name: string; author_email: string; content: string; quote_id?: number | null }) =>
+  postComment: (data: { cigar_id?: number | null; author_name: string; author_email?: string; content: string; quote_id?: number | null }) =>
     fetchApi<Comment>('/api/comments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
