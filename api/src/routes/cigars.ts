@@ -10,7 +10,9 @@ app.get('/', async (c) => {
   const rows = await db.select({
     id: cigars.id, name: cigars.name, factory: cigars.factory,
     era: cigars.era, theme: cigars.theme,
-    imageWatermarked: cigars.imageWatermarked, slug: cigars.slug,
+    imageWatermarked: cigars.imageWatermarked,
+    orientation: cigars.orientation,
+    slug: cigars.slug,
   }).from(cigars).orderBy(asc(cigars.nameSortKey), asc(cigars.id));
   return c.json(rows);
 });

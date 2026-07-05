@@ -8,6 +8,7 @@ export interface Cigar {
   theme: string;
   imageWatermarked: string;
   imageOriginal?: string;
+  orientation: 'portrait' | 'landscape';
   slug: string;
   createdAt: string;
 }

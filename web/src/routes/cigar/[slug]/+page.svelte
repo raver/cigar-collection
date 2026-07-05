@@ -31,11 +31,11 @@
     <!-- PC: left image, right info; Mobile: top image, bottom info -->
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Left: Image -->
-      <div>
+      <div class="flex items-center self-stretch">
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <!-- svelte-ignore a11y_click_events_have_key_events -->
         <div
-          class="cursor-pointer rounded overflow-hidden border border-ink/8 dark:border-sea-green/8 shadow-sm hover:shadow-lg transition-shadow duration-300"
+          class="cursor-pointer rounded overflow-hidden border border-ink/8 dark:border-sea-green/8 shadow-sm hover:shadow-lg transition-shadow duration-300 w-full"
           onclick={() => (lightboxOpen = true)}
           role="button"
           tabindex="0"

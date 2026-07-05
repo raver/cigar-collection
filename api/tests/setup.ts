@@ -64,6 +64,7 @@ vi.mock('../src/db/index.js', () => {
       theme: 'classic',
       imageOriginal: 'originals/test-cigar-abc123.jpg',
       imageWatermarked: 'watermarked/test-cigar-abc123.jpg',
+      orientation: 'portrait',
       slug: 'test-cigar-abc123',
       createdAt: new Date(),
     };

@@ -3,6 +3,7 @@ import { relations } from 'drizzle-orm';
 
 // Enums
 export const eraEnum = pgEnum('era', ['80年代', '90年代', '2000年以后', '不详']);
+export const orientationEnum = pgEnum('orientation', ['portrait', 'landscape']);
 export const commentStatusEnum = pgEnum('comment_status', ['pending', 'approved', 'rejected', 'hidden', 'deleted']);
 
 // 管理员表
@@ -22,6 +23,7 @@ export const cigars = pgTable('cigars', {
   theme: varchar('theme', { length: 50 }).notNull(),
   imageOriginal: varchar('image_original', { length: 255 }).notNull(),
   imageWatermarked: varchar('image_watermarked', { length: 255 }).notNull(),
+  orientation: orientationEnum('orientation').default('portrait').notNull(),
   slug: varchar('slug', { length: 100 }).unique().notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 }, (table) => ({

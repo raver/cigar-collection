@@ -6,23 +6,38 @@ interface ProcessResult {
   watermarkedPath: string;
 }
 
-export async function processAndUpload(file: File, slug: string): Promise<ProcessResult> {
+const NORMALIZE_DIMS: Record<'portrait' | 'landscape', { width: number; height: number }> = {
+  portrait: { width: 400, height: 800 },   // 1:2
+  landscape: { width: 800, height: 500 },  // 8:5
+};
+
+export async function processAndUpload(
+  file: File,
+  slug: string,
+  orientation: 'portrait' | 'landscape' = 'portrait',
+): Promise<ProcessResult> {
   const buffer = Buffer.from(await file.arrayBuffer());
   const filename = `${slug}.jpg`;
 
-  // Upload original
-  const originalPath = await uploadOriginal(filename, buffer);
+  // Normalize to canonical size per orientation
+  const dims = NORMALIZE_DIMS[orientation];
+  const normalizedBuffer = await sharp(buffer)
+    .resize(dims.width, dims.height, { fit: 'fill' })
+    .jpeg({ quality: 90 })
+    .toBuffer();
 
-  // Create watermarked version
-  const image = sharp(buffer);
-  const metadata = await image.metadata();
-  const width = metadata.width || 800;
-  const height = metadata.height || 800;
+  // Upload original (normalized, without watermark)
+  const originalPath = await uploadOriginal(filename, normalizedBuffer);
+
+  // Create watermarked version from normalized image
+  const metadata = await sharp(normalizedBuffer).metadata();
+  const width = metadata.width || dims.width;
+  const height = metadata.height || dims.height;
 
   const watermarkText = '烟标记忆';
   const svgWatermark = createTiledWatermarkSVG(width, height, watermarkText);
 
-  const watermarkedBuffer = await sharp(buffer)
+  const watermarkedBuffer = await sharp(normalizedBuffer)
     .composite([{
       input: Buffer.from(svgWatermark),
       top: 0,

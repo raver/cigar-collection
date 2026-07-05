@@ -8,11 +8,11 @@
   href="/cigar/{cigar.slug}"
   class="block bg-white dark:bg-night-card rounded border border-ink/8 dark:border-sea-green/8 shadow hover:-translate-y-1 hover:shadow-lg transition-transform duration-400 ease-out"
 >
-  <div class="aspect-square overflow-hidden">
+  <div class="aspect-[3/4] overflow-hidden bg-ink/3 dark:bg-white/3 flex items-center justify-center rounded-t">
     <img
       src={cigar.imageWatermarked}
       alt={cigar.name + '烟标'}
-      class="w-full h-full object-cover block transition-transform duration-600 hover:scale-105"
+      class="w-full h-full object-contain block"
       loading="lazy"
     />
   </div>

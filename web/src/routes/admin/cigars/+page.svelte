@@ -7,6 +7,7 @@
     factory: string;
     era: string;
     theme: string;
+    orientation: string;
     slug: string;
     imageWatermarked: string;
   }
@@ -123,6 +124,7 @@
             <th class="pb-3 text-xs text-concrete dark:text-pale tracking-wider font-normal">名称</th>
             <th class="pb-3 text-xs text-concrete dark:text-pale tracking-wider font-normal">卷烟厂</th>
             <th class="pb-3 text-xs text-concrete dark:text-pale tracking-wider font-normal">年代</th>
+            <th class="pb-3 text-xs text-concrete dark:text-pale tracking-wider font-normal">方向</th>
             <th class="pb-3 text-xs text-concrete dark:text-pale tracking-wider font-normal">主题</th>
             <th class="pb-3 text-xs text-concrete dark:text-pale tracking-wider font-normal text-right">操作</th>
           </tr>
@@ -133,6 +135,7 @@
               <td class="py-3 text-ink dark:text-sea-green">{cigar.name}</td>
               <td class="py-3 text-concrete dark:text-pale">{cigar.factory}</td>
               <td class="py-3 text-concrete dark:text-pale">{cigar.era}</td>
+              <td class="py-3 text-concrete dark:text-pale">{cigar.orientation === 'landscape' ? '横向' : '纵向'}</td>
               <td class="py-3 text-concrete dark:text-pale">{cigar.theme}</td>
               <td class="py-3 text-right">
                 <button

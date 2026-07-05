@@ -1,5 +1,5 @@
 {
-  "id": "b543f7d6-2abd-40b2-8da1-21b943d3682b",
+  "id": "6881e0c1-628d-4253-af5a-08c61bffd8f8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -59,6 +59,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "name_sort_key": {
+          "name": "name_sort_key",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "factory": {
           "name": "factory",
           "type": "varchar(100)",
@@ -90,6 +96,14 @@
           "primaryKey": false,
           "notNull": true
         },
+        "orientation": {
+          "name": "orientation",
+          "type": "orientation",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'portrait'"
+        },
         "slug": {
           "name": "slug",
           "type": "varchar(100)",
@@ -104,7 +118,29 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "cigars_name_sort_key_idx": {
+          "name": "cigars_name_sort_key_idx",
+          "columns": [
+            {
+              "expression": "name_sort_key",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
@@ -146,7 +182,7 @@
           "name": "author_email",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "content": {
           "name": "content",
@@ -232,6 +268,14 @@
         "90年代",
         "2000年以后",
         "不详"
+      ]
+    },
+    "public.orientation": {
+      "name": "orientation",
+      "schema": "public",
+      "values": [
+        "portrait",
+        "landscape"
       ]
     }
   },

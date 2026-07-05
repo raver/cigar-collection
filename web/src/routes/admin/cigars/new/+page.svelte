@@ -8,6 +8,7 @@
   let era = $state(eraOptions[0]);
   let theme = $state('');
   let imageFile: File | null = $state(null);
+  let orientation: string = $state('portrait');
   let error = $state('');
   let loading = $state(false);
 
@@ -32,6 +33,7 @@
       formData.append('era', era);
       formData.append('theme', theme);
       formData.append('image', imageFile);
+      formData.append('orientation', orientation);
 
       const res = await fetch('/admin/api/cigars', {
         method: 'POST',
@@ -110,6 +112,18 @@
         required
         class="w-full px-3 py-2 bg-warm dark:bg-night border border-ink/15 dark:border-sea-green/20 rounded text-sm text-ink dark:text-sea-green focus:outline-none focus:border-moss dark:focus:border-glow transition-colors"
       />
+    </div>
+
+    <div>
+      <label for="orientation" class="block text-xs text-concrete dark:text-pale tracking-wider mb-1.5">方向</label>
+      <select
+        id="orientation"
+        bind:value={orientation}
+        class="w-full px-3 py-2 bg-warm dark:bg-night border border-ink/15 dark:border-sea-green/20 rounded text-sm text-ink dark:text-sea-green focus:outline-none focus:border-moss dark:focus:border-glow transition-colors"
+      >
+        <option value="portrait">纵向</option>
+        <option value="landscape">横向</option>
+      </select>
     </div>
 
     <div>

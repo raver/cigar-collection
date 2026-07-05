@@ -42,6 +42,7 @@ app.get('/cigars', async (c) => {
     factory: cigars.factory,
     era: cigars.era,
     theme: cigars.theme,
+    orientation: cigars.orientation,
     slug: cigars.slug,
     imageWatermarked: cigars.imageWatermarked,
   }).from(cigars).orderBy(asc(cigars.nameSortKey), asc(cigars.id));
@@ -105,6 +106,8 @@ app.post('/cigars', async (c) => {
   const era = formData.get('era') as string;
   const theme = formData.get('theme') as string;
   const imageFile = formData.get('image') as File | null;
+  const orientationRaw = formData.get('orientation') as string;
+  const orientation = (orientationRaw === 'landscape' ? 'landscape' : 'portrait') as 'portrait' | 'landscape';
 
   if (!name || !factory || !era || !theme || !imageFile) {
     return c.json({ error: 'Missing required fields' }, 400);
@@ -116,11 +119,12 @@ app.post('/cigars', async (c) => {
   const slug = `${slugBase}-${nanoid(6)}`;
 
   const { processAndUpload } = await import('../services/image.js');
-  const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug);
+  const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug, orientation);
 
   const [row] = await db.insert(cigars).values({
     name, nameSortKey, factory, era: era as any, theme,
-    imageOriginal: originalPath, imageWatermarked: watermarkedPath, slug,
+    imageOriginal: originalPath, imageWatermarked: watermarkedPath,
+    orientation, slug,
   }).returning();
   return c.json(row, 201);
 });
@@ -157,7 +161,7 @@ app.post('/cigars/sort-by-name', async (c) => {
 app.put('/cigars/:id', async (c) => {
   const body = await c.req.json();
   const updates: Record<string, unknown> = {};
-  for (const key of ['name', 'factory', 'era', 'theme'] as const) {
+  for (const key of ['name', 'factory', 'era', 'theme', 'orientation'] as const) {
     if (body[key] !== undefined) updates[key] = body[key];
   }
   if (typeof body.name === 'string') {
