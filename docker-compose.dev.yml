@@ -6,6 +6,8 @@ services:
       POSTGRES_DB: cigar
       POSTGRES_USER: cigar
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"               # local非容器开发模式下会用上
     volumes:
       - postgres_cigar_data_dev:/var/lib/postgresql
     healthcheck:

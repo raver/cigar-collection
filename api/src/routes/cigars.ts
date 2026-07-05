@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { db } from '../db/index.js';
 import { cigars } from '../db/schema.js';
-import { desc, eq } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 
 const app = new Hono();
 
@@ -11,7 +11,7 @@ app.get('/', async (c) => {
     id: cigars.id, name: cigars.name, factory: cigars.factory,
     era: cigars.era, theme: cigars.theme,
     imageWatermarked: cigars.imageWatermarked, slug: cigars.slug,
-  }).from(cigars).orderBy(desc(cigars.createdAt));
+  }).from(cigars).orderBy(asc(cigars.nameSortKey), asc(cigars.id));
   return c.json(rows);
 });
 

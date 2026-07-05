@@ -14,9 +14,13 @@ export function buildCigarNameSortKey(name: string): string {
   const trimmedName = name.trim();
   if (!trimmedName) return 'cigar-unknown';
 
+  // 按首字符语言分组：中文在前(cn-)，英文在后(en-)
+  const isChinese = cjkPattern.test(trimmedName[0]);
+  const prefix = isChinese ? 'cn-' : 'en-';
+
   if (!cjkPattern.test(trimmedName)) {
     const normalized = normalizeString(trimmedName);
-    return normalized || 'cigar-unknown';
+    return normalized ? prefix + normalized : 'cigar-unknown';
   }
 
   let result = '';
@@ -48,5 +52,5 @@ export function buildCigarNameSortKey(name: string): string {
     }
   }
 
-  return result || 'cigar-unknown';
+  return result ? prefix + result : 'cigar-unknown';
 }

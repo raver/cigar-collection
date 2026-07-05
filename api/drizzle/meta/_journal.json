@@ -15,6 +15,13 @@
       "when": 1776825600000,
       "tag": "0001_name_sort_key",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783221453217,
+      "tag": "0002_cigar_sort_prefix",
+      "breakpoints": true
     }
   ]
 }

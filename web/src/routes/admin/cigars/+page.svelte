@@ -86,7 +86,7 @@
           disabled={sortingAll || loading || cigars.length === 0}
           class="px-4 py-2 border border-moss/30 dark:border-sea-green/30 text-moss dark:text-sea-green text-sm tracking-wider rounded hover:bg-moss/8 dark:hover:bg-sea-green/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          {sortingAll ? '排序中...' : '按名称排序全部烟标'}
+          {sortingAll ? '重建中...' : '重建排序键（修复/刷新用）'}
         </button>
 
         <a
@@ -98,7 +98,7 @@
       </div>
 
       <p class="text-xs text-concrete dark:text-pale tracking-wider">
-        首次使用会为历史数据补齐拼音排序键，后续新增和改名会自动维护。
+        新增和改名自动维护。仅在排序异常或修改排序规则后使用。
       </p>
     </div>
   </div>
