@@ -18,6 +18,44 @@
   let sortMessage = $state('');
   let deletingId: number | null = $state(null);
   let sortingAll = $state(false);
+  let hoveredCigar: CigarItem | null = $state(null);
+  let tooltipX = $state(0);
+  let tooltipY = $state(0);
+
+  function handleMouseEnter(cigar: CigarItem) {
+    hoveredCigar = cigar;
+  }
+
+  function handleMouseMove(e: MouseEvent) {
+    if (!hoveredCigar) return;
+
+    const landscapeWidth = 224;
+    const landscapeHeight = 140;
+    const portraitWidth = 128;
+    const portraitHeight = 256;
+
+    const isLandscape = hoveredCigar.orientation === 'landscape';
+    const estimatedWidth = isLandscape ? landscapeWidth : portraitWidth;
+    const estimatedHeight = isLandscape ? landscapeHeight : portraitHeight;
+
+    const padding = 16;
+    let x = e.clientX + padding;
+    let y = e.clientY + padding;
+
+    if (x + estimatedWidth + padding > window.innerWidth) {
+      x = e.clientX - estimatedWidth - padding;
+    }
+    if (y + estimatedHeight + padding > window.innerHeight) {
+      y = e.clientY - estimatedHeight - padding;
+    }
+
+    tooltipX = x;
+    tooltipY = y;
+  }
+
+  function handleMouseLeave() {
+    hoveredCigar = null;
+  }
 
   async function loadCigars() {
     try {
@@ -131,7 +169,12 @@
         </thead>
         <tbody>
           {#each cigars as cigar (cigar.id)}
-            <tr class="border-b border-ink/5 dark:border-sea-green/5 hover:bg-warm/60 dark:hover:bg-night-card/60 transition-colors">
+            <tr
+              class="border-b border-ink/5 dark:border-sea-green/5 hover:bg-warm/60 dark:hover:bg-night-card/60 transition-colors"
+              onmouseenter={() => handleMouseEnter(cigar)}
+              onmousemove={handleMouseMove}
+              onmouseleave={handleMouseLeave}
+            >
               <td class="py-3 text-ink dark:text-sea-green">{cigar.name}</td>
               <td class="py-3 text-concrete dark:text-pale">{cigar.factory}</td>
               <td class="py-3 text-concrete dark:text-pale">{cigar.era}</td>
@@ -162,3 +205,19 @@
     <p class="mt-4 text-xs text-concrete dark:text-pale tracking-wider">共 {cigars.length} 条</p>
   {/if}
 </div>
+
+{#if hoveredCigar}
+  <div
+    class="fixed z-50 pointer-events-none bg-warm dark:bg-night-card border border-ink/10 dark:border-sea-green/20 rounded shadow-xl p-2 transition-opacity duration-150"
+    style="left: {tooltipX}px; top: {tooltipY}px;"
+  >
+    <img
+      src={hoveredCigar.imageWatermarked}
+      alt={hoveredCigar.name}
+      class="block {hoveredCigar.orientation === 'landscape' ? 'w-56 h-auto' : 'h-64 w-auto'} max-w-56 max-h-64 object-contain rounded-sm"
+    />
+    <p class="mt-1.5 text-xs text-center text-ink dark:text-sea-green tracking-wider truncate max-w-56">
+      {hoveredCigar.name}
+    </p>
+  </div>
+{/if}
