@@ -6,4 +6,7 @@
   <p class="text-xs text-glow/45 dark:text-olive/45 tracking-wider leading-relaxed">
     © 2026 烟标记忆 · 收藏80年代的烟火记忆
   </p>
+  <p class="text-xs text-glow/45 dark:text-olive/45 tracking-wider leading-relaxed">
+        Made with ❤️ by <a href="https://github.com/raver" target="_blank" rel="noopener">raver</a>
+  </p>
 </footer>

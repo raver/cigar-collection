@@ -50,6 +50,15 @@ app.get('/cigars', async (c) => {
   return c.json(rows);
 });
 
+// GET /admin/api/cigars/:id — 单条烟标详情（编辑页预填）
+app.get('/cigars/:id', async (c) => {
+  const id = parseInt(c.req.param('id'));
+  if (isNaN(id)) return c.json({ error: 'Invalid id' }, 400);
+  const [row] = await db.select().from(cigars).where(eq(cigars.id, id));
+  if (!row) return c.json({ error: 'Not found' }, 404);
+  return c.json(row);
+});
+
 // GET /admin/api/comments?status=pending
 app.get('/comments', async (c) => {
   const status = c.req.query('status') || 'pending';
@@ -157,19 +166,66 @@ app.post('/cigars/sort-by-name', async (c) => {
   return c.json({ ok: true, updatedCount });
 });
 
-// PUT /admin/api/cigars/:id — 编辑属性
+// PUT /admin/api/cigars/:id — 编辑属性 + 可选替换图片
+// 支持两种请求格式：
+//   - JSON: { name?, factory?, era?, theme?, orientation? }
+//   - FormData: 字段同上 + 可选 image 文件
 app.put('/cigars/:id', async (c) => {
-  const body = await c.req.json();
+  const cigarId = parseInt(c.req.param('id'));
+  if (isNaN(cigarId)) return c.json({ error: 'Invalid id' }, 400);
+
+  const contentType = c.req.header('content-type') || '';
+  const isFormData = contentType.includes('multipart/form-data');
+
   const updates: Record<string, unknown> = {};
-  for (const key of ['name', 'factory', 'era', 'theme', 'orientation'] as const) {
-    if (body[key] !== undefined) updates[key] = body[key];
+
+  if (isFormData) {
+    const formData = await c.req.formData();
+
+    for (const key of ['name', 'factory', 'era', 'theme', 'orientation'] as const) {
+      const val = formData.get(key);
+      if (val !== null && typeof val === 'string' && val !== '') {
+        updates[key] = key === 'orientation'
+          ? (val === 'landscape' ? 'landscape' : 'portrait')
+          : val;
+      }
+    }
+
+    // 可选图片替换
+    const imageFile = formData.get('image') as File | null;
+    if (imageFile && imageFile.size > 0) {
+      // 读取 name 字段（可能已在 updates 中，也可能在 formData 里）
+      const name = typeof updates.name === 'string' ? updates.name : formData.get('name') as string;
+      const orientation = (updates.orientation as string) || (formData.get('orientation') as string) || 'portrait';
+
+      // 获取现有记录用于 slug 和 orientation
+      const [existing] = await db.select({
+        slug: cigars.slug,
+        orientation: cigars.orientation,
+      }).from(cigars).where(eq(cigars.id, cigarId));
+
+      const slug = existing?.slug || `${buildCigarNameSortKey(name || 'cigar')}-unknown`;
+      const orient = (orientation === 'landscape' ? 'landscape' : 'portrait') as 'portrait' | 'landscape';
+
+      const { processAndUpload } = await import('../services/image.js');
+      const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug, orient);
+      updates.imageOriginal = originalPath;
+      updates.imageWatermarked = watermarkedPath;
+    }
+  } else {
+    const body = await c.req.json();
+    for (const key of ['name', 'factory', 'era', 'theme', 'orientation'] as const) {
+      if (body[key] !== undefined) updates[key] = body[key];
+    }
   }
-  if (typeof body.name === 'string') {
-    updates.nameSortKey = buildCigarNameSortKey(body.name);
+
+  // 名称变更时重算 nameSortKey 和 slug
+  if (typeof updates.name === 'string') {
+    updates.nameSortKey = buildCigarNameSortKey(updates.name as string);
 
     const [existing] = await db.select({ slug: cigars.slug })
       .from(cigars)
-      .where(eq(cigars.id, parseInt(c.req.param('id'))));
+      .where(eq(cigars.id, cigarId));
 
     if (existing) {
       const lastDashIndex = existing.slug.lastIndexOf('-');
@@ -177,9 +233,9 @@ app.put('/cigars/:id', async (c) => {
       updates.slug = updates.nameSortKey + nanoidPart;
     }
   }
+
   if (Object.keys(updates).length === 0) return c.json({ error: 'No fields to update' }, 400);
-  await db.update(cigars).set(updates as any)
-    .where(eq(cigars.id, parseInt(c.req.param('id'))));
+  await db.update(cigars).set(updates as any).where(eq(cigars.id, cigarId));
   return c.json({ ok: true });
 });
 

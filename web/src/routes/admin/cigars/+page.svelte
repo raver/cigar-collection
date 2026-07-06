@@ -138,13 +138,21 @@
               <td class="py-3 text-concrete dark:text-pale">{cigar.orientation === 'landscape' ? '横向' : '纵向'}</td>
               <td class="py-3 text-concrete dark:text-pale">{cigar.theme}</td>
               <td class="py-3 text-right">
-                <button
-                  onclick={() => deleteCigar(cigar.id, cigar.name)}
-                  disabled={deletingId === cigar.id}
-                  class="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 tracking-wider disabled:opacity-40 transition-colors"
-                >
-                  {deletingId === cigar.id ? '删除中...' : '删除'}
-                </button>
+                <div class="flex items-center justify-end gap-3">
+                  <a
+                    href="/admin/cigars/{cigar.id}/edit"
+                    class="text-xs text-moss dark:text-sea-green hover:text-moss-deep dark:hover:text-glow tracking-wider transition-colors"
+                  >
+                    编辑
+                  </a>
+                  <button
+                    onclick={() => deleteCigar(cigar.id, cigar.name)}
+                    disabled={deletingId === cigar.id}
+                    class="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 tracking-wider disabled:opacity-40 transition-colors"
+                  >
+                    {deletingId === cigar.id ? '删除中...' : '删除'}
+                  </button>
+                </div>
               </td>
             </tr>
           {/each}

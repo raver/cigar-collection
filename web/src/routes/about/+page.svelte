@@ -49,8 +49,8 @@
     <div class="mb-12">
       <h2 class="font-display text-[22px] text-ink dark:text-sea-green tracking-[4px] mb-4 pb-2.5 border-b border-ink/12 dark:border-sea-green/12">关于我</h2>
       <div class="font-serif text-[15px] text-sage dark:text-sea-green/80 text-justify tracking-[0.3px] leading-[2.2]">
-        <p>一个喜欢收藏旧物的开发者。白天写代码，晚上翻烟标。相信技术不只是工具，也可以用来留住一些柔软的东西。</p>
-        <p class="mt-[1.2em]">这个网站使用了 SvelteKit、Hono、PostgreSQL 和 Cloudflare R2 构建，部署在 Docker 上。它同时也是我的个人技术作品集的一部分。</p>
+        <p>一个喜欢收藏旧物的开发者。相信技术不只是工具，也可以用来留住一些柔软的东西。</p>
+        <p class="mt-[1.2em]">这个网站使用了 SvelteKit、Hono、PostgreSQL 和 Cloudflare R2 构建，部署在 Docker 上。</p>
       </div>
     </div>
 
@@ -70,7 +70,7 @@
 
     <!-- Contact -->
     <div class="mt-10">
-      <p class="font-serif text-sm text-pale dark:text-sage-dark">联系我：<a href="mailto:hello@example.com" class="text-moss dark:text-sea-green border-b border-moss dark:border-sea-green hover:text-moss-deep dark:hover:text-glow hover:border-moss-deep dark:hover:border-glow transition-colors duration-300">hello@example.com</a></p>
+      <p class="font-serif text-sm text-pale dark:text-sage-dark">联系我：<a href="mailto:yetiscream@proton.me" class="text-moss dark:text-sea-green border-b border-moss dark:border-sea-green hover:text-moss-deep dark:hover:text-glow hover:border-moss-deep dark:hover:border-glow transition-colors duration-300">yetiscream@proton.me</a></p>
     </div>
 
   </div>
