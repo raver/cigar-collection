@@ -21,19 +21,19 @@
         <nav class="flex flex-col gap-2.5">
           <a
             href="/"
-            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300"
+            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center md:justify-start"
           >首页</a>
           <a
             href="/gallery"
-            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300"
+            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center md:justify-start"
           >图库</a>
           <a
             href="/guestbook"
-            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300"
+            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center md:justify-start"
           >留言</a>
           <a
             href="/about"
-            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300"
+            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center md:justify-start"
           >关于</a>
         </nav>
       </div>
@@ -44,13 +44,13 @@
         <div class="flex flex-col gap-2.5">
           <a
             href="mailto:yetiscream@proton.me"
-            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300"
+            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center md:justify-start"
           >yetiscream@proton.me</a>
           <a
             href="https://github.com/raver"
             target="_blank"
             rel="noopener"
-            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300"
+            class="text-sm text-glow/65 dark:text-sea-green/60 tracking-[1.5px] hover:text-glow dark:hover:text-sea-green transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center md:justify-start"
           >GitHub</a>
         </div>
       </div>

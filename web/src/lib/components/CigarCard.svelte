@@ -17,7 +17,7 @@
     />
   </div>
   <div class="px-4 py-3.5">
-    <div class="font-serif font-semibold text-[15px] text-ink dark:text-sea-green tracking-wider mb-1">
+    <div class="font-serif font-semibold text-sm md:text-[15px] text-ink dark:text-sea-green tracking-wider mb-1">
       {cigar.name}
     </div>
     <div class="text-xs text-pale dark:text-sage-dark tracking-wide">

@@ -40,8 +40,8 @@
 
 <!-- Intro -->
 <section class="px-6 pb-14">
-  <div class="max-w-[660px] mx-auto relative before:content-[''] before:absolute before:left-[-20px] md:before:left-[-20px] before:top-1 before:bottom-1 before:w-[2px] before:bg-moss/35 before:rounded">
-    <div class="font-serif text-base text-sage dark:text-sea-green text-justify tracking-wide leading-[2.3]">
+  <div class="max-w-[660px] mx-auto relative before:content-[''] before:absolute before:left-0 md:before:left-[-20px] before:top-1 before:bottom-1 before:w-[2px] before:bg-moss/35 before:rounded">
+    <div class="font-serif text-[15px] md:text-base text-sage dark:text-sea-green text-left md:text-justify tracking-wide leading-[2.1] md:leading-[2.3] pl-5 md:pl-0">
       <p>那些被时光揉皱的纸烟盒，早已不是商品，而是一段段散不去的记忆。每一枚烟标，都是岁月拆开的盲盒，装着旧时光、老街道、寻常人家的晨昏，也装着回不去的年少与人间烟火。</p>
       <p class="mt-[1.6em]">往事如烟，飘散在风里；岁月如盒，封存在方寸之间。这里收藏的不只是烟标，是一个时代淡淡的余温与感伤。</p>
     </div>
@@ -68,7 +68,7 @@
     <div class="text-center mt-10">
       <a
         href="/gallery"
-        class="font-serif text-sm text-moss dark:text-sea-green tracking-[3px] inline-flex items-center gap-1.5 pb-0.5 border-b border-moss dark:border-sea-green transition-colors duration-300 hover:text-moss-deep dark:hover:text-glow hover:border-moss-deep dark:hover:border-glow"
+        class="font-serif text-sm text-moss dark:text-sea-green tracking-[3px] inline-flex items-center gap-1.5 py-2 border-b border-moss dark:border-sea-green transition-colors duration-300 hover:text-moss-deep dark:hover:text-glow hover:border-moss-deep dark:hover:border-glow min-h-[44px]"
       >
         查看全部收藏 →
       </a>

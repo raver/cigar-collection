@@ -52,11 +52,11 @@
     aria-label="图片放大查看"
     tabindex="-1"
   >
-    <div class="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center animate-[lightboxIn_0.35s_ease]">
+    <div class="relative max-w-[92vw] md:max-w-[90vw] max-h-[88vh] md:max-h-[85vh] flex flex-col items-center animate-[lightboxIn_0.35s_ease] px-2 md:px-0">
       <!-- Close button -->
       <button
         onclick={close}
-        class="absolute -top-10 right-0 bg-transparent border-none text-white/60 text-[28px] cursor-pointer leading-none transition-colors duration-300 hover:text-white"
+        class="absolute top-2 right-2 md:top-0 md:-right-12 min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-full bg-white/10 md:bg-transparent border border-white/20 md:border-none text-white/70 md:text-white/60 text-[26px] cursor-pointer leading-none transition-colors duration-300 hover:text-white hover:bg-white/20 md:hover:bg-transparent"
         aria-label="关闭"
       >
         &times;
@@ -66,7 +66,7 @@
       <img
         {src}
         {alt}
-        class="max-w-[90vw] max-h-[75vh] object-contain rounded shadow-[0_8px_40px_rgba(0,0,0,.4)]"
+        class="max-w-full md:max-w-[90vw] max-h-[70vh] md:max-h-[75vh] object-contain rounded shadow-[0_8px_40px_rgba(0,0,0,.4)]"
       />
 
       <!-- Caption -->

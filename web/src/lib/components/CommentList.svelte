@@ -41,7 +41,7 @@
           {#if onQuote}
             <button
               onclick={() => onQuote(comment)}
-              class="text-xs text-moss dark:text-sea-green hover:underline tracking-wider"
+              class="text-xs text-moss dark:text-sea-green hover:underline tracking-wider min-h-[44px] min-w-[44px] inline-flex items-center justify-center px-2"
             >
               引用
             </button>

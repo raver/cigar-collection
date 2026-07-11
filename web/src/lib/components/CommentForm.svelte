@@ -91,7 +91,7 @@
           <button
             type="button"
             onclick={() => quote = null}
-            class="text-pale dark:text-sage-dark hover:text-red-600 dark:hover:text-red-400 text-sm"
+            class="text-pale dark:text-sage-dark hover:text-red-600 dark:hover:text-red-400 text-sm min-h-[44px] min-w-[44px] inline-flex items-center justify-center"
             aria-label="取消引用"
           >
             ✕
@@ -142,7 +142,7 @@
       <button
         type="submit"
         disabled={submitting}
-        class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-6 py-2.5 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-6 py-2.5 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
       >
         {submitting ? '提交中...' : '提 交'}
       </button>

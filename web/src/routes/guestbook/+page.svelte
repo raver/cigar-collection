@@ -54,12 +54,12 @@
         {#if data.page > 1}
           <a
             href="/guestbook?page={data.page - 1}"
-            class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest transition-all duration-300"
+            class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest transition-all duration-300 min-h-[44px] inline-flex items-center"
           >
             上一页
           </a>
         {:else}
-          <span class="border border-ink/12 dark:border-sea-green/12 text-pale dark:text-sage-dark rounded px-5 py-2 font-serif text-sm tracking-widest opacity-40 cursor-not-allowed select-none">
+          <span class="border border-ink/12 dark:border-sea-green/12 text-pale dark:text-sage-dark rounded px-5 py-2 font-serif text-sm tracking-widest opacity-40 cursor-not-allowed select-none min-h-[44px] inline-flex items-center">
             上一页
           </span>
         {/if}
@@ -69,12 +69,12 @@
         {#if data.page < data.totalPages}
           <a
             href="/guestbook?page={data.page + 1}"
-            class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest transition-all duration-300"
+            class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest transition-all duration-300 min-h-[44px] inline-flex items-center"
           >
             下一页
           </a>
         {:else}
-          <span class="border border-ink/12 dark:border-sea-green/12 text-pale dark:text-sage-dark rounded px-5 py-2 font-serif text-sm tracking-widest opacity-40 cursor-not-allowed select-none">
+          <span class="border border-ink/12 dark:border-sea-green/12 text-pale dark:text-sage-dark rounded px-5 py-2 font-serif text-sm tracking-widest opacity-40 cursor-not-allowed select-none min-h-[44px] inline-flex items-center">
             下一页
           </span>
         {/if}

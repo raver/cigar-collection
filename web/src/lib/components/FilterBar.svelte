@@ -38,9 +38,9 @@
 </script>
 
 <div class="py-7 px-6 pb-2.5 bg-parchment dark:bg-night-header transition-colors duration-500">
-  <div class="max-w-[1100px] mx-auto flex gap-3.5 items-end flex-wrap">
+  <div class="max-w-[1100px] mx-auto grid grid-cols-2 md:flex md:flex-wrap gap-3.5 items-end">
     <!-- Name search -->
-    <div class="flex flex-col gap-1.5 flex-[1.5] min-w-[140px]">
+    <div class="flex flex-col gap-1.5 col-span-2 md:flex-[1.5] md:min-w-[140px]">
       <label for="filter-name" class="text-xs text-pale dark:text-sage-dark tracking-wider">名称</label>
       <input
         id="filter-name"
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Factory select -->
-    <div class="flex flex-col gap-1.5 flex-1 min-w-[140px]">
+    <div class="flex flex-col gap-1.5 col-span-1 md:flex-1 md:min-w-[140px]">
       <label for="filter-factory" class="text-xs text-pale dark:text-sage-dark tracking-wider">卷烟厂</label>
       <select
         id="filter-factory"
@@ -67,7 +67,7 @@
     </div>
 
     <!-- Era select -->
-    <div class="flex flex-col gap-1.5 flex-1 min-w-[140px]">
+    <div class="flex flex-col gap-1.5 col-span-1 md:flex-1 md:min-w-[140px]">
       <label for="filter-era" class="text-xs text-pale dark:text-sage-dark tracking-wider">年代</label>
       <select
         id="filter-era"
@@ -83,7 +83,7 @@
     </div>
 
     <!-- Theme select -->
-    <div class="flex flex-col gap-1.5 flex-1 min-w-[140px]">
+    <div class="flex flex-col gap-1.5 col-span-1 md:flex-1 md:min-w-[140px]">
       <label for="filter-theme" class="text-xs text-pale dark:text-sage-dark tracking-wider">主题</label>
       <select
         id="filter-theme"
@@ -100,7 +100,7 @@
     <!-- Reset button -->
     <button
       onclick={reset}
-      class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 whitespace-nowrap"
+      class="col-span-1 md:w-auto border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 whitespace-nowrap min-h-[44px] inline-flex items-center justify-center"
     >
       重 置
     </button>
