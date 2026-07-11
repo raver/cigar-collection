@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阶段1 黄金时代风格示意图</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* 宣纸底色 — 更浅、更柔、更暖 */
+      --paper: #F5F0E8;
+      --paper-deep: #EDE6DA;
+      --paper-card: #FAF7F0;
+      --paper-stain: #F0E9DD;
+
+      /* 墨韵 — 带一点蓝灰的浓墨 */
+      --ink: #262626;
+      --ink-light: #5C5650;
+      --ink-wash: #3D3D3D;
+
+      /* 铜版金 — 金属渐变感 */
+      --gold: #B8860B;
+      --gold-light: #D4AF37;
+      --gold-dark: #8B6914;
+      --gold-fade: rgba(184, 134, 11, 0.12);
+
+      --border: #D9CFC0;
+
+      --night: #1C1B19;
+      --night-card: #252320;
+      --night-text: #D8CDBA;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif SC', serif;
+      background-color: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      /* 宣纸纹理：细腻纤维 + 轻微噪点 */
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fiber'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fiber)' opacity='0.035'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at 15% 25%, rgba(184,134,11,0.03) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 75%, rgba(0,0,0,0.02) 0%, transparent 40%);
+      background-size: 150px 150px, auto, auto;
+      transition: background-color 0.6s, color 0.6s;
+    }
+
+    body.night {
+      background-color: var(--night);
+      color: var(--night-text);
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fiber'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fiber)' opacity='0.04'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at 15% 25%, rgba(201,162,39,0.04) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 75%, rgba(0,0,0,0.25) 0%, transparent 40%);
+    }
+
+    /* 顶部淡墨线 */
+    .top-ink {
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--ink) 5%,
+        var(--ink) 20%,
+        transparent 25%,
+        transparent 75%,
+        var(--ink) 80%,
+        var(--ink) 95%,
+        transparent 100%
+      );
+      opacity: 0.5;
+    }
+
+    body.night .top-ink {
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--night-text) 5%,
+        var(--night-text) 20%,
+        transparent 25%,
+        transparent 75%,
+        var(--night-text) 80%,
+        var(--night-text) 95%,
+        transparent 100%
+      );
+      opacity: 0.3;
+    }
+
+    /* Header */
+    header {
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 32px;
+      letter-spacing: 8px;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0.4;
+    }
+
+    body.night .logo { color: var(--night-text); }
+
+    nav a {
+      color: var(--ink-light);
+      text-decoration: none;
+      margin-left: 32px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      transition: color 0.4s;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    body.night nav a { color: #9A9080; }
+    nav a:hover { color: var(--gold); }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.4s;
+    }
+    nav a:hover::after { width: 100%; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 90px 24px 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 大幅水墨晕染背景 */
+    .hero-ink {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      opacity: 0.09;
+    }
+
+    body.night .hero-ink { opacity: 0.06; }
+
+    .hero-ink svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 72px;
+      letter-spacing: 22px;
+      margin-bottom: 24px;
+      line-height: 1.3;
+    }
+
+    .hero h1 span {
+      display: block;
+    }
+
+    /* 铜版烫金效果 */
+    .hero h1 .gold {
+      background: linear-gradient(135deg,
+        #E8C547 0%,
+        #D4AF37 25%,
+        #B8860B 50%,
+        #D4AF37 75%,
+        #E8C547 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.12));
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      letter-spacing: 4px;
+      color: var(--ink-light);
+      margin-bottom: 50px;
+      line-height: 2;
+    }
+
+    body.night .hero-subtitle { color: #9A9080; }
+
+    .hero .cta {
+      display: inline-block;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      padding: 14px 40px;
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-decoration: none;
+      transition: all 0.5s;
+      background: rgba(250, 247, 240, 0.4);
+      position: relative;
+    }
+
+    body.night .hero .cta {
+      border-color: var(--night-text);
+      color: var(--night-text);
+      background: rgba(37, 35, 32, 0.4);
+    }
+
+    .hero .cta:hover {
+      background: var(--ink);
+      color: var(--paper-card);
+      border-color: var(--ink);
+    }
+
+    body.night .hero .cta:hover {
+      background: var(--night-text);
+      color: var(--night);
+    }
+
+    /* 水墨分隔线 */
+    .divider {
+      text-align: center;
+      padding: 40px 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .divider svg {
+      width: 24px;
+      height: 24px;
+      color: var(--gold);
+      opacity: 0.6;
+    }
+
+    /* 引言 */
+    .intro {
+      max-width: 600px;
+      margin: 0 auto 70px;
+      padding: 0 28px;
+      font-size: 16px;
+      line-height: 2.8;
+      text-align: justify;
+      color: var(--ink-light);
+      position: relative;
+    }
+
+    body.night .intro { color: #9A9080; }
+
+    .intro::before {
+      content: '“';
+      position: absolute;
+      top: -18px;
+      left: -4px;
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 80px;
+      color: var(--gold);
+      opacity: 0.2;
+      line-height: 1;
+    }
+
+    /* 卡片区域 */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 28px 100px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 36px;
+      letter-spacing: 10px;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+
+    body.night .section-title { color: var(--night-text); }
+
+    .section-subtitle {
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--ink-light);
+      display: inline-block;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 40px;
+    }
+
+    /* 旧信笺/藏书票风格卡片 */
+    .card {
+      background: var(--paper-card);
+      border: 1px solid var(--border);
+      padding: 18px 18px 26px;
+      position: relative;
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+      box-shadow:
+        2px 3px 8px rgba(0,0,0,0.05),
+        inset 0 0 80px rgba(184,134,11,0.03);
+      cursor: pointer;
+      transform: rotate(0.4deg);
+    }
+
+    .card:nth-child(even) { transform: rotate(-0.5deg); }
+
+    body.night .card {
+      background: var(--night-card);
+      border-color: #36332E;
+      box-shadow:
+        2px 3px 8px rgba(0,0,0,0.15),
+        inset 0 0 80px rgba(201,162,39,0.02);
+    }
+
+    .card:hover {
+      transform: rotate(-1deg) translateY(-6px);
+      box-shadow:
+        8px 14px 30px rgba(0,0,0,0.1),
+        inset 0 0 80px rgba(184,134,11,0.05);
+    }
+
+    /* 泛黄胶带 */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 52px;
+      height: 22px;
+      background: rgba(232, 222, 196, 0.65);
+      border: 1px solid rgba(139,105,20,0.1);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    body.night .card::before {
+      background: rgba(60, 55, 48, 0.55);
+      border-color: rgba(201,162,39,0.06);
+    }
+
+    /* 旧污渍 */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,105,20,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-img {
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, var(--paper-stain) 0%, var(--paper-deep) 100%);
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    body.night .card-img {
+      background: linear-gradient(160deg, #2D2B27 0%, #252320 100%);
+      border-color: #36332E;
+    }
+
+    .card-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 65%, rgba(139,105,20,0.05) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: sepia(18%) saturate(85%) contrast(95%) brightness(99%);
+      transition: filter 0.5s;
+    }
+
+    .card:hover .card-img img {
+      filter: sepia(8%) saturate(92%) contrast(98%) brightness(100%);
+    }
+
+    .card-name {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 26px;
+      letter-spacing: 3px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    body.night .card-name { color: var(--night-text); }
+
+    .card-meta {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: var(--ink-light);
+    }
+
+    /* 藏书印章 */
+    .stamp {
+      position: absolute;
+      top: 28px;
+      right: 24px;
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--gold);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--gold);
+      opacity: 0.35;
+      transform: rotate(-12deg);
+      font-family: 'Ma Shan Zheng', cursive;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--paper-card);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      color: var(--ink-light);
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.06);
+      transition: all 0.3s;
+    }
+
+    body.night .theme-toggle {
+      background: var(--night-card);
+      border-color: #36332E;
+      color: #9A9080;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 18px 20px; }
+      .logo { font-size: 26px; }
+      nav a { margin-left: 16px; font-size: 12px; }
+      .hero { padding: 60px 20px 50px; }
+      .hero h1 { font-size: 48px; letter-spacing: 12px; }
+      .hero-subtitle { font-size: 14px; letter-spacing: 2px; }
+      .cards { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .card { padding: 12px 12px 18px; }
+      .card-name { font-size: 22px; }
+      .intro::before { font-size: 60px; top: -8px; left: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-ink"></div>
+
+  <header>
+    <a href="#" class="logo">烟标记忆</a>
+    <nav>
+      <a href="#">首页</a>
+      <a href="#">图库</a>
+      <a href="#">留言</a>
+      <a href="#">关于</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-ink">
+      <svg viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <filter id="inkBleed" x="-50%" y="-50%" width="200%" height="200%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="25" xChannelSelector="R" yChannelSelector="G"/>
+            <feGaussianBlur stdDeviation="2.5"/>
+          </filter>
+          <linearGradient id="inkGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#262626;stop-opacity:0.9"/>
+            <stop offset="60%" style="stop-color:#3D3D3D;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#262626;stop-opacity:0"/>
+          </linearGradient>
+          <linearGradient id="inkGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#1A1A1A;stop-opacity:0.8"/>
+            <stop offset="50%" style="stop-color:#3D3D3D;stop-opacity:0.5"/>
+            <stop offset="100%" style="stop-color:#262626;stop-opacity:0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 主墨脉 — 大幅流动的墨迹 -->
+        <path d="M-50,120 C80,80 180,180 280,150 C380,120 420,60 520,90 C620,120 700,50 850,80"
+              fill="none" stroke="url(#inkGrad1)" stroke-width="45" stroke-linecap="round" filter="url(#inkBleed)"/>
+        <path d="M-30,380 C120,340 220,420 340,380 C460,340 520,280 650,320 C780,360 850,300 950,340"
+              fill="none" stroke="url(#inkGrad2)" stroke-width="38" stroke-linecap="round" filter="url(#inkBleed)"/>
+        <path d="M680,-20 C700,60 650,140 720,200 C790,260 750,340 820,420"
+              fill="none" stroke="url(#inkGrad1)" stroke-width="28" stroke-linecap="round" filter="url(#inkBleed)"/>
+
+        <!-- 墨点晕染 -->
+        <ellipse cx="140" cy="200" rx="55" ry="35" fill="url(#inkGrad1)" filter="url(#inkBleed)"/>
+        <ellipse cx="220" cy="240" rx="30" ry="20" fill="url(#inkGrad2)" filter="url(#inkBleed)"/>
+        <ellipse cx="750" cy="180" rx="45" ry="28" fill="url(#inkGrad2)" filter="url(#inkBleed)"/>
+        <ellipse cx="680" cy="260" rx="25" ry="18" fill="url(#inkGrad1)" filter="url(#inkBleed)"/>
+        <ellipse cx="120" cy="420" rx="40" ry="25" fill="url(#inkGrad2)" filter="url(#inkBleed)"/>
+        <ellipse cx="480" cy="440" rx="35" ry="22" fill="url(#inkGrad1)" filter="url(#inkBleed)"/>
+
+        <!-- 飞白细线 -->
+        <path d="M100,300 Q200,280 300,310 T500,290 T700,320"
+              fill="none" stroke="#262626" stroke-width="2" opacity="0.25" filter="url(#inkBleed)"/>
+        <path d="M550,100 Q650,130 750,110 T920,130"
+              fill="none" stroke="#262626" stroke-width="1.5" opacity="0.2" filter="url(#inkBleed)"/>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <h1>
+        <span>往事如烟</span>
+        <span class="gold">岁月盲盒</span>
+      </h1>
+      <p class="hero-subtitle">一枚枚褪色烟标，藏着一整个 80 年代的烟火与人间。</p>
+      <a href="#" class="cta">浏览全部收藏</a>
+    </div>
+  </section>
+
+  <div class="divider">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+      <circle cx="12" cy="12" r="10"/>
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 2v20M2 12h20" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <div class="intro">
+    <p>那些被时光揉皱的纸烟盒，早已不是商品，而是一段段散不去的记忆。每一枚烟标，都是岁月拆开的盲盒，装着旧时光、老街道、寻常人家的晨昏。</p>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">随机挑选</h2>
+      <p class="section-subtitle">每次刷新，都是一次时光回溯</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="stamp">旧藏</div>
+        <div class="card-img">
+          <img src="../imgs/洋金花.jpg" alt="洋金花">
+        </div>
+        <div class="card-name">洋金花</div>
+        <div class="card-meta">昆明卷烟厂 · 80年代</div>
+      </div>
+
+      <div class="card">
+        <div class="stamp">旧藏</div>
+        <div class="card-img">
+          <img src="../imgs/百花.jpg" alt="百花">
+        </div>
+        <div class="card-name">百花</div>
+        <div class="card-meta">开封卷烟厂 · 80年代</div>
+      </div>
+
+      <div class="card">
+        <div class="stamp">旧藏</div>
+        <div class="card-img">
+          <img src="../imgs/胜利.png" alt="胜利">
+        </div>
+        <div class="card-name">胜利</div>
+        <div class="card-meta">上海卷烟厂 · 80年代</div>
+      </div>
+
+      <div class="card">
+        <div class="stamp">旧藏</div>
+        <div class="card-img" style="display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(45deg,var(--paper-stain),var(--paper-stain) 10px,var(--paper-deep) 10px,var(--paper-deep) 20px);">
+          <span style="color:var(--ink-light);font-size:12px;letter-spacing:2px;">示例图片</span>
+        </div>
+        <div class="card-name">大前门</div>
+        <div class="card-meta">天津卷烟厂 · 80年代</div>
+      </div>
+    </div>
+  </section>
+
+  <button class="theme-toggle" onclick="document.body.classList.toggle('night')">昼夜</button>
+</body>
+</html>

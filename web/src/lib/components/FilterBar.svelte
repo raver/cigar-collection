@@ -37,27 +37,27 @@
   }
 </script>
 
-<div class="py-7 px-6 pb-2.5 bg-parchment dark:bg-night-header transition-colors duration-500">
+<div class="py-7 px-6 pb-2.5 bg-paper-deep dark:bg-night-header transition-colors duration-500">
   <div class="max-w-[1100px] mx-auto grid grid-cols-2 md:flex md:flex-wrap gap-3.5 items-end">
     <!-- Name search -->
     <div class="flex flex-col gap-1.5 col-span-2 md:flex-[1.5] md:min-w-[140px]">
-      <label for="filter-name" class="text-xs text-pale dark:text-sage-dark tracking-wider">名称</label>
+      <label for="filter-name" class="text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider">名称</label>
       <input
         id="filter-name"
         type="text"
         placeholder="搜索烟标名称..."
         bind:value={nameFilter}
-        class="bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2 font-serif text-sm text-ink dark:text-sea-green placeholder:text-pale dark:placeholder:text-sage-dark outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/35 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
       />
     </div>
 
     <!-- Factory select -->
     <div class="flex flex-col gap-1.5 col-span-1 md:flex-1 md:min-w-[140px]">
-      <label for="filter-factory" class="text-xs text-pale dark:text-sage-dark tracking-wider">卷烟厂</label>
+      <label for="filter-factory" class="text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider">卷烟厂</label>
       <select
         id="filter-factory"
         bind:value={factoryFilter}
-        class="bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-sea-green outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%238A9A90%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
       >
         <option value="">全部</option>
         {#each factories as factory}
@@ -68,11 +68,11 @@
 
     <!-- Era select -->
     <div class="flex flex-col gap-1.5 col-span-1 md:flex-1 md:min-w-[140px]">
-      <label for="filter-era" class="text-xs text-pale dark:text-sage-dark tracking-wider">年代</label>
+      <label for="filter-era" class="text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider">年代</label>
       <select
         id="filter-era"
         bind:value={eraFilter}
-        class="bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-sea-green outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%238A9A90%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
       >
         <option value="">全部</option>
         <option value="80年代">80年代</option>
@@ -84,11 +84,11 @@
 
     <!-- Theme select -->
     <div class="flex flex-col gap-1.5 col-span-1 md:flex-1 md:min-w-[140px]">
-      <label for="filter-theme" class="text-xs text-pale dark:text-sage-dark tracking-wider">主题</label>
+      <label for="filter-theme" class="text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider">主题</label>
       <select
         id="filter-theme"
         bind:value={themeFilter}
-        class="bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-sea-green outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%238A9A90%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
       >
         <option value="">全部</option>
         {#each themes as theme}
@@ -100,13 +100,13 @@
     <!-- Reset button -->
     <button
       onclick={reset}
-      class="col-span-1 md:w-auto border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-5 py-2 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 whitespace-nowrap min-h-[44px] inline-flex items-center justify-center"
+      class="col-span-1 md:w-auto border border-gold dark:border-gold-light text-gold dark:text-gold-light hover:bg-gold hover:text-paper-card dark:hover:bg-gold-light dark:hover:text-night rounded-sm px-5 py-2 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 whitespace-nowrap min-h-[44px] inline-flex items-center justify-center"
     >
       重 置
     </button>
   </div>
 
-  <div class="max-w-[1100px] mx-auto mt-4 text-[13px] text-pale dark:text-sage-dark tracking-wide">
+  <div class="max-w-[1100px] mx-auto mt-4 text-[13px] text-ink-light/55 dark:text-night-text/40 tracking-wide">
     共 {count} 枚烟标
   </div>
 </div>

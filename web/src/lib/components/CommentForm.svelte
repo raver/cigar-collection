@@ -70,28 +70,28 @@
 </script>
 
 <div class="mt-8">
-  <h3 class="font-serif font-bold text-lg text-ink dark:text-sea-green tracking-wider mb-4">留下你的回忆</h3>
+  <h3 class="font-serif font-bold text-lg text-ink dark:text-night-text tracking-wider mb-4">留下你的回忆</h3>
 
   {#if submitted}
-    <div class="bg-moss/10 dark:bg-sea-green/10 border border-moss/20 dark:border-sea-green/20 rounded p-4 text-sm text-moss dark:text-sea-green">
+    <div class="bg-gold/8 dark:bg-gold-light/8 border border-gold/20 dark:border-gold-light/20 rounded-sm p-4 text-sm text-gold dark:text-gold-light">
       留言已提交，等待审核。
     </div>
   {:else}
     <form onsubmit={handleSubmit} class="space-y-4">
       {#if quote}
-        <div class="border-l-2 border-moss dark:border-sea-green bg-parchment dark:bg-night-header rounded-r p-3 mb-4 flex justify-between items-start gap-3">
+        <div class="border-l-2 border-gold dark:border-gold-light bg-paper-deep dark:bg-night-header rounded-r-sm p-3 mb-4 flex justify-between items-start gap-3">
           <div class="flex-1 min-w-0">
-            <div class="text-xs text-pale dark:text-sage-dark tracking-wider mb-1">
+            <div class="text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider mb-1">
               引用 @{quote.authorName}
             </div>
-            <div class="text-sm text-sage dark:text-sea-green/80 tracking-wide line-clamp-2">
+            <div class="text-sm text-ink-light dark:text-night-text/60 tracking-wide line-clamp-2">
               {quote.content}
             </div>
           </div>
           <button
             type="button"
             onclick={() => quote = null}
-            class="text-pale dark:text-sage-dark hover:text-red-600 dark:hover:text-red-400 text-sm min-h-[44px] min-w-[44px] inline-flex items-center justify-center"
+            class="text-ink-light/40 dark:text-night-text/30 hover:text-red-600 dark:hover:text-red-400 text-sm min-h-[44px] min-w-[44px] inline-flex items-center justify-center"
             aria-label="取消引用"
           >
             ✕
@@ -99,34 +99,34 @@
         </div>
       {/if}
       <div>
-        <label for="comment-name" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">姓名 *</label>
+        <label for="comment-name" class="block text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider mb-1.5">姓名 *</label>
         <input
           id="comment-name"
           type="text"
           bind:value={authorName}
           required
-          class="w-full bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2.5 font-serif text-sm text-ink dark:text-sea-green placeholder:text-pale dark:placeholder:text-sage-dark outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow"
+          class="w-full bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
           placeholder="你的名字"
         />
       </div>
       <div>
-        <label for="comment-email" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">邮箱</label>
+        <label for="comment-email" class="block text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider mb-1.5">邮箱</label>
         <input
           id="comment-email"
           type="email"
           bind:value={authorEmail}
-          class="w-full bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2.5 font-serif text-sm text-ink dark:text-sea-green placeholder:text-pale dark:placeholder:text-sage-dark outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow"
+          class="w-full bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
           placeholder="不会公开，选填"
         />
       </div>
       <div>
-        <label for="comment-content" class="block text-xs text-pale dark:text-sage-dark tracking-wider mb-1.5">留言 *</label>
+        <label for="comment-content" class="block text-xs text-ink-light/60 dark:text-night-text/40 tracking-wider mb-1.5">留言 *</label>
         <textarea
           id="comment-content"
           bind:value={content}
           required
           rows={4}
-          class="w-full bg-white dark:bg-night-card border border-ink/12 dark:border-sea-green/12 rounded px-3 py-2.5 font-serif text-sm text-ink dark:text-sea-green placeholder:text-pale dark:placeholder:text-sage-dark outline-none transition-colors duration-300 focus:border-moss dark:focus:border-glow resize-y"
+          class="w-full bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light resize-y"
           placeholder="写下你想说的话..."
         ></textarea>
       </div>
@@ -135,14 +135,14 @@
         <div class="text-sm text-red-600 dark:text-red-400">{error}</div>
       {/if}
 
-      <p class="text-xs text-pale dark:text-sage-dark tracking-wide">
+      <p class="text-xs text-ink-light/50 dark:text-night-text/35 tracking-wide">
         留言需审核后才会公开显示。纯文本，不支持 HTML。
       </p>
 
       <button
         type="submit"
         disabled={submitting}
-        class="border border-moss dark:border-sea-green text-moss dark:text-sea-green hover:bg-moss hover:text-white dark:hover:bg-sea-green dark:hover:text-night rounded px-6 py-2.5 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+        class="border border-gold dark:border-gold-light text-gold dark:text-gold-light hover:bg-gold hover:text-paper-card dark:hover:bg-gold-light dark:hover:text-night rounded-sm px-6 py-2.5 font-serif text-sm tracking-widest cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
       >
         {submitting ? '提交中...' : '提 交'}
       </button>

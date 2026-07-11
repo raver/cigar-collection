@@ -31,11 +31,32 @@
 </svelte:head>
 
 <!-- Page Hero -->
-<section class="relative overflow-hidden bg-gradient-to-br from-ink to-ink-light dark:from-night dark:to-night-header py-14 md:py-16 px-6 text-center transition-colors duration-500">
-  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,.1)_100%)] pointer-events-none"></div>
+<section class="relative overflow-hidden bg-paper dark:bg-night py-14 md:py-16 px-6 text-center transition-colors duration-500">
+  <!-- SVG 水墨晕染（轻量版） -->
+  <div class="absolute inset-0 z-0 opacity-[0.06] dark:opacity-[0.04] pointer-events-none">
+    <svg viewBox="0 0 900 300" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+      <defs>
+        <filter id="inkBleedG" x="-50%" y="-50%" width="200%" height="200%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="4" result="noise"/>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G"/>
+          <feGaussianBlur stdDeviation="2"/>
+        </filter>
+        <linearGradient id="inkGradG" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#262626;stop-opacity:0.7"/>
+          <stop offset="100%" style="stop-color:#262626;stop-opacity:0"/>
+        </linearGradient>
+      </defs>
+      <path d="M-50,100 C150,60 250,160 400,130 C550,100 600,50 750,90 C900,130 950,70 1000,100"
+            fill="none" stroke="url(#inkGradG)" stroke-width="30" stroke-linecap="round" filter="url(#inkBleedG)"/>
+      <ellipse cx="200" cy="160" rx="40" ry="25" fill="url(#inkGradG)" filter="url(#inkBleedG)"/>
+      <ellipse cx="700" cy="140" rx="35" ry="20" fill="url(#inkGradG)" filter="url(#inkBleedG)"/>
+    </svg>
+  </div>
+
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.03)_100%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.15)_100%)] pointer-events-none"></div>
   <div class="relative z-10 max-w-[700px] mx-auto">
-    <h1 class="font-display text-[36px] md:text-[40px] text-warm dark:text-sea-green tracking-[8px] md:tracking-[14px] mb-2.5">图 库</h1>
-    <p class="font-serif font-extralight text-[15px] text-warm/72 dark:text-sea-green/62 tracking-wider">在这里，翻阅旧时光</p>
+    <h1 class="font-handwritten text-[40px] md:text-[44px] text-ink dark:text-night-text tracking-[14px] md:tracking-[18px] mb-2.5">图 库</h1>
+    <p class="font-serif font-extralight text-[15px] text-ink-light dark:text-night-text/55 tracking-[4px]">在这里，翻阅旧时光</p>
   </div>
 </section>
 
@@ -44,21 +65,21 @@
 {/if}
 
 <!-- Card Grid -->
-<section class="bg-parchment dark:bg-night-header py-6 px-6 pb-16 transition-colors duration-500">
+<section class="bg-paper-deep dark:bg-night-header py-6 px-6 pb-16 transition-colors duration-500">
   <div class="max-w-[1100px] mx-auto">
     {#if loading}
-      <div class="text-center py-20 text-pale dark:text-sage-dark text-sm tracking-wider">加载中...</div>
+      <div class="text-center py-20 text-ink-light/50 dark:text-night-text/40 text-sm tracking-wider">加载中...</div>
     {:else if filtered.length === 0}
-      <div class="text-center py-20 text-pale dark:text-sage-dark text-sm tracking-wider">没有找到匹配的烟标。</div>
+      <div class="text-center py-20 text-ink-light/50 dark:text-night-text/40 text-sm tracking-wider">没有找到匹配的烟标。</div>
     {:else}
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-[18px]">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {#each filtered as cigar (cigar.id)}
           <CigarCard {cigar} />
         {/each}
       </div>
 
       {#if filtered.length > 0}
-        <div class="text-center mt-10 text-xs text-pale dark:text-sage-dark tracking-wider">共 {filtered.length} 枚烟标</div>
+        <div class="text-center mt-10 text-xs text-ink-light/50 dark:text-night-text/40 tracking-wider">共 {filtered.length} 枚烟标</div>
       {/if}
     {/if}
   </div>

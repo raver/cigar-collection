@@ -15,11 +15,11 @@
 </svelte:head>
 
 {#if data.isAdmin}
-  <div class="min-h-screen bg-warm dark:bg-night text-ink dark:text-sea-green font-serif transition-colors duration-500">
+  <div class="min-h-screen bg-paper dark:bg-night text-ink dark:text-night-text font-serif transition-colors duration-500">
     {@render children()}
   </div>
 {:else}
-  <div class="min-h-screen flex flex-col bg-warm dark:bg-night text-ink dark:text-sea-green font-serif transition-colors duration-500">
+  <div class="min-h-screen flex flex-col bg-paper dark:bg-night text-ink dark:text-night-text font-serif transition-colors duration-500">
     <Header />
     <main class="flex-1">
       {@render children()}

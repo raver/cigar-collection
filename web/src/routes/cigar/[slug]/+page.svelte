@@ -35,7 +35,7 @@
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <!-- svelte-ignore a11y_click_events_have_key_events -->
         <div
-          class="cursor-pointer rounded overflow-hidden border border-ink/8 dark:border-sea-green/8 shadow-sm hover:shadow-lg transition-shadow duration-300 w-full"
+          class="cursor-pointer rounded-sm overflow-hidden border border-border dark:border-[#36332E] shadow-sm hover:shadow-md transition-shadow duration-300 w-full"
           onclick={() => (lightboxOpen = true)}
           role="button"
           tabindex="0"
@@ -52,31 +52,31 @@
       <!-- Right: Info -->
       <div>
         <!-- Name -->
-        <h1 class="font-display text-3xl text-ink dark:text-sea-green tracking-[4px] mb-6">
+        <h1 class="font-display text-3xl text-ink dark:text-night-text tracking-[4px] mb-6">
           {data.cigar.name}
         </h1>
 
         <!-- Attribute list -->
         <div class="space-y-3 mb-6">
           <div class="flex items-start gap-3">
-            <span class="text-xs text-pale dark:text-sage-dark tracking-wider min-w-[56px] pt-0.5">卷烟厂</span>
-            <span class="font-serif text-sm text-ink dark:text-sea-green tracking-wide">{data.cigar.factory}</span>
+            <span class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5">卷烟厂</span>
+            <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide">{data.cigar.factory}</span>
           </div>
           <div class="flex items-start gap-3">
-            <span class="text-xs text-pale dark:text-sage-dark tracking-wider min-w-[56px] pt-0.5">年代</span>
-            <span class="font-serif text-sm text-ink dark:text-sea-green tracking-wide">{data.cigar.era}</span>
+            <span class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5">年代</span>
+            <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide">{data.cigar.era}</span>
           </div>
           <div class="flex items-start gap-3">
-            <span class="text-xs text-pale dark:text-sage-dark tracking-wider min-w-[56px] pt-0.5">主题</span>
-            <span class="font-serif text-sm text-ink dark:text-sea-green tracking-wide">{data.cigar.theme}</span>
+            <span class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5">主题</span>
+            <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide">{data.cigar.theme}</span>
           </div>
         </div>
 
         <!-- Divider -->
-        <div class="border-t border-ink/8 dark:border-sea-green/8 my-6"></div>
+        <div class="border-t border-border dark:border-[#36332E] my-6"></div>
 
         <!-- Comments -->
-        <h3 class="font-serif font-bold text-lg text-ink dark:text-sea-green tracking-wider mb-4">留言</h3>
+        <h3 class="font-serif font-bold text-lg text-ink dark:text-night-text tracking-wider mb-4">留言</h3>
         <CommentList comments={data.comments} onQuote={handleQuote} />
         <CommentForm bind:this={commentForm} cigarId={data.cigar.id} {quoteComment} />
       </div>
