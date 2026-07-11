@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- 折纸鹤 — 烟标记忆 logo（精修版：文艺、含蓄、安静） -->
+  <!-- 左翼 -->
+  <path d="M50 56 C34 28, 16 36, 16 36 C16 36, 28 48, 50 70Z"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
+  <!-- 右翼 -->
+  <path d="M50 56 C66 28, 84 36, 84 36 C84 36, 72 48, 50 70Z"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
+  <!-- 头颈 -->
+  <path d="M50 70 C50 70, 44 56, 28 44"
+        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.85"/>
+  <!-- 尾部 -->
+  <path d="M50 70 C50 70, 68 52, 76 64"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <!-- 身体中线 -->
+  <line x1="50" y1="56" x2="50" y2="70" stroke="currentColor" stroke-width="1.2" opacity="0.3"/>
+</svg>

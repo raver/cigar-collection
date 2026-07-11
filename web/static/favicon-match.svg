@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- 火柴 — 烟标记忆 logo -->
+  <!-- 火柴棒 -->
+  <rect x="44" y="32" width="10" height="48" rx="2" fill="currentColor" opacity="0.85"/>
+  <!-- 火柴头 -->
+  <ellipse cx="49" cy="28" rx="8" ry="9" fill="currentColor" opacity="0.95"/>
+  <!-- 火焰 -->
+  <path d="M49 18 C49 8, 42 12, 42 18 C42 22, 49 24, 49 18Z"
+        fill="currentColor" opacity="0.5"/>
+  <path d="M49 20 C49 12, 44 15, 44 20 C44 23, 49 24, 49 20Z"
+        fill="currentColor" opacity="0.3"/>
+</svg>
