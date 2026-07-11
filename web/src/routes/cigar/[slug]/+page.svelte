@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import Lightbox from '$lib/components/Lightbox.svelte';
   import CommentList from '$lib/components/CommentList.svelte';
   import CommentForm from '$lib/components/CommentForm.svelte';
@@ -19,6 +20,16 @@
     quoteComment = null;
     commentForm?.cancelQuote();
   }
+
+  function goBack() {
+    // 如果有浏览器历史记录，直接回退（保留上一页的筛选状态）
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // 没有历史记录时（如直接打开详情页），跳转到图库
+      goto('/gallery');
+    }
+  }
 </script>
 
 <svelte:head>
@@ -28,6 +39,18 @@
 
 <section class="py-10 md:py-14 px-6">
   <div class="max-w-[900px] mx-auto">
+
+    <!-- 返回按钮 -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <button
+      onclick={goBack}
+      class="inline-flex items-center gap-2 mb-6 text-sm text-ink-light/60 dark:text-night-text/40 tracking-wider hover:text-gold dark:hover:text-gold-light transition-colors duration-300 cursor-pointer group"
+    >
+      <span class="text-base leading-none transition-transform duration-300 group-hover:-translate-x-1">←</span>
+      <span>返回</span>
+    </button>
+
     <!-- PC: left image, right info; Mobile: top image, bottom info -->
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Left: Image -->

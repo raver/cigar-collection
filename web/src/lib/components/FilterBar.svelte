@@ -1,12 +1,15 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import type { Cigar } from '$lib/api.js';
 
   let { cigars, onFiltered }: { cigars: Cigar[]; onFiltered: (filtered: Cigar[]) => void } = $props();
 
-  let nameFilter = $state('');
-  let factoryFilter = $state('');
-  let eraFilter = $state('');
-  let themeFilter = $state('');
+  // 从 URL 查询参数初始化筛选状态（支持前进/后退恢复状态）
+  let nameFilter = $state($page.url.searchParams.get('name') ?? '');
+  let factoryFilter = $state($page.url.searchParams.get('factory') ?? '');
+  let eraFilter = $state($page.url.searchParams.get('era') ?? '');
+  let themeFilter = $state($page.url.searchParams.get('theme') ?? '');
 
   // Derive unique options from data
   let factories = $derived([...new Set(cigars.map((c) => c.factory).filter(Boolean))].sort());
@@ -27,6 +30,19 @@
 
   $effect(() => {
     onFiltered(filtered);
+  });
+
+  // 筛选条件变化 → 同步到 URL（replaceState 避免每次输入都产生历史记录）
+  $effect(() => {
+    const params = new URLSearchParams();
+    if (nameFilter) params.set('name', nameFilter);
+    if (factoryFilter) params.set('factory', factoryFilter);
+    if (eraFilter) params.set('era', eraFilter);
+    if (themeFilter) params.set('theme', themeFilter);
+
+    const qs = params.toString();
+    const newUrl = qs ? `?${qs}` : window.location.pathname;
+    goto(newUrl, { replaceState: true, keepFocus: true, noScroll: true });
   });
 
   function reset() {
