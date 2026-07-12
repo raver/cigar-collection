@@ -3,14 +3,27 @@ import { z } from 'zod';
 import { db } from '../db/index.js';
 import { comments } from '../db/schema.js';
 import { eq, desc, and, inArray } from 'drizzle-orm';
+import { rateLimit } from '../middleware/rate-limit.js';
 
 const app = new Hono();
 
+// 评论提交限流：每 IP 每分钟最多 5 条
+app.use('/comments', rateLimit());
+
 const commentSchema = z.object({
   cigar_id: z.number().nullable().optional(),
-  author_name: z.string().min(1).max(50),
-  author_email: z.string().email().max(100).optional().nullable().or(z.literal('')),
-  content: z.string().min(1).max(1000),
+  author_name: z.string({ required_error: '请输入姓名' })
+    .min(1, '请输入姓名')
+    .max(50, '姓名不能超过 50 个字'),
+  author_email: z.string()
+    .email('邮箱格式不正确')
+    .max(100, '邮箱不能超过 100 个字符')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  content: z.string({ required_error: '请输入留言内容' })
+    .min(1, '请输入留言内容')
+    .max(1000, '留言内容不能超过 1000 个字'),
   quote_id: z.number().nullable().optional(),
 });
 
@@ -18,7 +31,16 @@ const commentSchema = z.object({
 app.post('/comments', async (c) => {
   const body = await c.req.json();
   const parsed = commentSchema.safeParse(body);
-  if (!parsed.success) return c.json({ error: parsed.error.flatten() }, 400);
+  if (!parsed.success) {
+    // 将 Zod 校验错误转成友好的中文提示，并带字段名
+    const fieldErrors = parsed.error.flatten().fieldErrors;
+    const firstKey = Object.keys(fieldErrors)[0];
+    const firstError = firstKey ? String((fieldErrors as Record<string, string[] | undefined>)[firstKey]?.[0] || '') : '';
+    return c.json({
+      error: firstError || '请检查输入内容',
+      field: firstKey || undefined,
+    }, 400);
+  }
 
   const { cigar_id, author_name, author_email, content, quote_id } = parsed.data;
   const email = author_email && typeof author_email === 'string' && author_email.trim()

@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, timestamp, integer, pgEnum, index } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, text, timestamp, integer, pgEnum, index, foreignKey } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // Enums
@@ -30,17 +30,20 @@ export const cigars = pgTable('cigars', {
   nameSortKeyIdx: index('cigars_name_sort_key_idx').on(table.nameSortKey, table.id),
 }));
 
-// 留言表
+// 留言表 — 用 foreignKey() 避免 Drizzle 循环引用类型推断问题
 export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),
-  cigarId: integer('cigar_id').references((): any => cigars.id, { onDelete: 'cascade' }),
+  cigarId: integer('cigar_id'),
   authorName: varchar('author_name', { length: 50 }).notNull(),
   authorEmail: varchar('author_email', { length: 100 }),
   content: text('content').notNull(),
-  quoteId: integer('quote_id').references((): any => comments.id, { onDelete: 'set null' }),
+  quoteId: integer('quote_id'),
   status: commentStatusEnum('status').default('pending').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-});
+}, (table) => ({
+  cigarFk: foreignKey({ columns: [table.cigarId], foreignColumns: [cigars.id] }).onDelete('cascade'),
+  quoteFk: foreignKey({ columns: [table.quoteId], foreignColumns: [table.id] }).onDelete('set null'),
+}));
 
 // Relations
 export const cigarsRelations = relations(cigars, ({ many }) => ({

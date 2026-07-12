@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { api } from '$lib/api.js';
+  import { api, ApiError } from '$lib/api.js';
   import type { Comment } from '$lib/api.js';
 
   let { cigarId, quoteComment }: { cigarId: number | null; quoteComment?: Comment | null } = $props();
@@ -10,28 +10,70 @@
   let submitting = $state(false);
   let submitted = $state(false);
   let error = $state('');
-  let quote = $state<Comment | null>(quoteComment ?? null);
+  let errorField = $state<string | null>(null);
+  let quote = $state<Comment | null>(null);
+
+  // 同步外部 quoteComment 变化
+  $effect(() => {
+    if (quoteComment != null) quote = quoteComment;
+  });
+
+  // 服务端字段名 → 前端元素 ID
+  const FIELD_IDS: Record<string, string> = {
+    author_name: 'comment-name',
+    author_email: 'comment-email',
+    content: 'comment-content',
+  };
+
+  function getFieldClass(field: string): string {
+    const base = 'w-full bg-paper-card dark:bg-night-card rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 ';
+    const hasError = errorField === field;
+    const border = hasError
+      ? 'border-2 border-red-500 dark:border-red-400'
+      : 'border border-border dark:border-[#36332E] focus:border-gold dark:focus:border-gold-light';
+    return base + border;
+  }
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
     if (submitting || submitted) return;
 
+    // 前端校验
     if (!authorName.trim()) {
       error = '请输入姓名';
+      errorField = 'author_name';
+      focusField('author_name');
       return;
     }
     if (!content.trim()) {
       error = '请输入留言内容';
+      errorField = 'content';
+      focusField('content');
+      return;
+    }
+    if (content.trim().length > 1000) {
+      error = '留言内容不能超过 1000 个字';
+      errorField = 'content';
+      focusField('content');
+      return;
+    }
+    if (authorName.trim().length > 50) {
+      error = '姓名不能超过 50 个字';
+      errorField = 'author_name';
+      focusField('author_name');
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (authorEmail.trim() && !emailRegex.test(authorEmail.trim())) {
       error = '邮箱格式不正确';
+      errorField = 'author_email';
+      focusField('author_email');
       return;
     }
 
     submitting = true;
     error = '';
+    errorField = null;
 
     try {
       await api.postComment({
@@ -47,9 +89,10 @@
       content = '';
       quote = null;
     } catch (err) {
-      if (err instanceof Response) {
-        try { const body = await err.clone().json(); error = body.error || '提交失败，请稍后再试'; }
-        catch { error = '提交失败，请稍后再试'; }
+      if (err instanceof ApiError) {
+        error = err.message;
+        errorField = err.field;
+        if (err.field) focusField(err.field);
       } else if (err instanceof Error) {
         error = err.message || '提交失败，请稍后再试';
       } else {
@@ -57,6 +100,17 @@
       }
     } finally {
       submitting = false;
+    }
+  }
+
+  function focusField(field: string) {
+    const id = FIELD_IDS[field];
+    if (id) {
+      // 使用 tick 确保 DOM 已更新
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) { el.focus(); (el as HTMLInputElement | HTMLTextAreaElement).select?.(); }
+      }, 50);
     }
   }
 
@@ -105,7 +159,7 @@
           type="text"
           bind:value={authorName}
           required
-          class="w-full bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
+          class={getFieldClass('author_name')}
           placeholder="你的名字"
         />
       </div>
@@ -115,7 +169,7 @@
           id="comment-email"
           type="email"
           bind:value={authorEmail}
-          class="w-full bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
+          class={getFieldClass('author_email')}
           placeholder="不会公开，选填"
         />
       </div>
@@ -126,7 +180,7 @@
           bind:value={content}
           required
           rows={4}
-          class="w-full bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/30 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light resize-y"
+          class={getFieldClass('content') + ' resize-y'}
           placeholder="写下你想说的话..."
         ></textarea>
       </div>

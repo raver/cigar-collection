@@ -1,7 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import app from '../src/index.js';
+import { setSelectResult } from './setup.js';
 
 describe('Public API', () => {
+  beforeEach(() => {
+    // 每个测试前重置 select 返回值为默认 []
+    setSelectResult([]);
+  });
+
   it('GET /api/health returns ok', async () => {
     const res = await app.request('/api/health');
     expect(res.status).toBe(200);
@@ -17,12 +23,14 @@ describe('Public API', () => {
   });
 
   it('GET /api/cigars/nonexistent returns 404', async () => {
-    // The slug route will try to query DB which returns [] from mock, leading to 404
     const res = await app.request('/api/cigars/nonexistent');
     expect(res.status).toBe(404);
   });
 
   it('GET /api/guestbook returns paginated result', async () => {
+    // guestbook handler 做了两次 select：先 count，再取数据
+    // 第一次 select 需要 [{ total: 0 }] 以通过解构，第二次默认为 []
+    setSelectResult([{ total: 0 }]);
     const res = await app.request('/api/guestbook');
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -33,6 +41,7 @@ describe('Public API', () => {
   });
 
   it('GET /api/guestbook?page=2 uses page param', async () => {
+    setSelectResult([{ total: 10 }]);
     const res = await app.request('/api/guestbook?page=2');
     expect(res.status).toBe(200);
     const body = await res.json();

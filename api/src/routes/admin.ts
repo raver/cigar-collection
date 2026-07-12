@@ -2,10 +2,17 @@ import { Hono } from 'hono';
 import { setCookie, deleteCookie } from 'hono/cookie';
 import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
-import { admins, cigars, comments } from '../db/schema.js';
+import { admins, cigars, comments, type NewCigar } from '../db/schema.js';
 import { asc, desc, eq, inArray } from 'drizzle-orm';
 import { authMiddleware, createSession } from '../middleware/auth.js';
 import { buildCigarNameSortKey } from '../services/cigar-sort.js';
+
+// ── 类型安全的 enum 常量 ──
+const STATUSES = ['pending', 'approved', 'rejected', 'hidden', 'deleted'] as const;
+type CommentStatus = typeof STATUSES[number];
+
+const ERAS = ['80年代', '90年代', '2000年以后', '不详'] as const;
+type CigarEra = typeof ERAS[number];
 
 const app = new Hono();
 
@@ -20,6 +27,7 @@ app.post('/login', async (c) => {
   const token = createSession(username);
   setCookie(c, 'cigar_session', token, {
     httpOnly: true, secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax',  // 单人后台，SameSite 已覆盖 95% CSRF 场景，暂不加 Token
     maxAge: 86400 * 7, path: '/',
   });
   return c.json({ ok: true });
@@ -61,9 +69,24 @@ app.get('/cigars/:id', async (c) => {
 
 // GET /admin/api/comments?status=pending
 app.get('/comments', async (c) => {
-  const status = c.req.query('status') || 'pending';
-  const rows = await db.select().from(comments)
-    .where(eq(comments.status, status as any))
+  const rawStatus = c.req.query('status') || 'pending';
+  const status: CommentStatus = STATUSES.includes(rawStatus as CommentStatus)
+    ? (rawStatus as CommentStatus)
+    : 'pending';
+  const rows = await db.select({
+    id: comments.id,
+    cigarId: comments.cigarId,
+    authorName: comments.authorName,
+    authorEmail: comments.authorEmail,
+    content: comments.content,
+    status: comments.status,
+    quoteId: comments.quoteId,
+    createdAt: comments.createdAt,
+    cigarName: cigars.name,
+    cigarSlug: cigars.slug,
+  }).from(comments)
+    .leftJoin(cigars, eq(comments.cigarId, cigars.id))
+    .where(eq(comments.status, status))
     .orderBy(desc(comments.createdAt));
 
   // 获取所有被引用的留言
@@ -90,11 +113,12 @@ app.get('/comments', async (c) => {
 
 // PATCH /admin/api/comments/:id — 审核
 app.patch('/comments/:id', async (c) => {
-  const { status } = await c.req.json();
-  if (!['approved', 'rejected', 'hidden'].includes(status)) {
+  const { status: rawStatus } = await c.req.json();
+  if (!['approved', 'rejected', 'hidden'].includes(rawStatus)) {
     return c.json({ error: 'Invalid status' }, 400);
   }
-  await db.update(comments).set({ status: status as any })
+  const status = rawStatus as 'approved' | 'rejected' | 'hidden';
+  await db.update(comments).set({ status })
     .where(eq(comments.id, parseInt(c.req.param('id'))));
   return c.json({ ok: true });
 });
@@ -112,15 +136,20 @@ app.post('/cigars', async (c) => {
   const formData = await c.req.formData();
   const name = formData.get('name') as string;
   const factory = formData.get('factory') as string;
-  const era = formData.get('era') as string;
+  const eraRaw = formData.get('era') as string;
   const theme = formData.get('theme') as string;
   const imageFile = formData.get('image') as File | null;
   const orientationRaw = formData.get('orientation') as string;
   const orientation = (orientationRaw === 'landscape' ? 'landscape' : 'portrait') as 'portrait' | 'landscape';
 
-  if (!name || !factory || !era || !theme || !imageFile) {
+  if (!name || !factory || !eraRaw || !theme || !imageFile) {
     return c.json({ error: 'Missing required fields' }, 400);
   }
+
+  if (!ERAS.includes(eraRaw as CigarEra)) {
+    return c.json({ error: `Invalid era. Must be one of: ${ERAS.join(', ')}` }, 400);
+  }
+  const era = eraRaw as CigarEra;
 
   const { nanoid } = await import('nanoid');
   const nameSortKey = buildCigarNameSortKey(name);
@@ -131,7 +160,7 @@ app.post('/cigars', async (c) => {
   const { originalPath, watermarkedPath } = await processAndUpload(imageFile, slug, orientation);
 
   const [row] = await db.insert(cigars).values({
-    name, nameSortKey, factory, era: era as any, theme,
+    name, nameSortKey, factory, era, theme,
     imageOriginal: originalPath, imageWatermarked: watermarkedPath,
     orientation, slug,
   }).returning();
@@ -235,7 +264,7 @@ app.put('/cigars/:id', async (c) => {
   }
 
   if (Object.keys(updates).length === 0) return c.json({ error: 'No fields to update' }, 400);
-  await db.update(cigars).set(updates as any).where(eq(cigars.id, cigarId));
+  await db.update(cigars).set(updates as Partial<NewCigar>).where(eq(cigars.id, cigarId));
   return c.json({ ok: true });
 });
 

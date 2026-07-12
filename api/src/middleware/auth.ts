@@ -2,7 +2,18 @@ import { createMiddleware } from 'hono/factory';
 import { getCookie } from 'hono/cookie';
 import crypto from 'crypto';
 
-const SESSION_SECRET = process.env.SESSION_SECRET || 'dev-secret-change-me';
+function getSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    throw new Error(
+      'SESSION_SECRET environment variable is required. ' +
+      'Generate one with: openssl rand -hex 32'
+    );
+  }
+  return secret;
+}
+
+const SESSION_SECRET: string = getSessionSecret();
 
 function signToken(payload: string): string {
   const hmac = crypto.createHmac('sha256', SESSION_SECRET);

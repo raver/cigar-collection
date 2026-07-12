@@ -30,6 +30,7 @@ services:
     restart: unless-stopped
     environment:
       - ORIGIN=http://localhost
+      - API_INTERNAL_URL=http://cigar-api:3001
 
   cigar-nginx:
     image: nginx:alpine

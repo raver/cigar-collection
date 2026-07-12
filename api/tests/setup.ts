@@ -1,98 +1,56 @@
 import { vi } from 'vitest';
 
-// Mock the db module so tests don't require a real database connection
-vi.mock('../src/db/index.js', () => {
-  // Track how many times select has been called to return different results
-  let selectCallIndex = 0;
+// ── 可外部覆写的 select 返回值 ──
+// 测试文件通过 setSelectResult() 设置下一个 db.select() 的返回值。
+// 每次 select() 调用后会**自动重置为 []**，避免测试间泄漏。
+let _nextSelectResult: unknown[] = [];
+export function setSelectResult(result: unknown[]) {
+  _nextSelectResult = result;
+}
+function consumeSelectResult(): unknown[] {
+  const val = _nextSelectResult;
+  _nextSelectResult = [];
+  return val;
+}
 
-  const createChainable = (resolvedValue: unknown) => {
-    const builder: Record<string, any> = {
-      then(onFulfilled: Function) {
-        return Promise.resolve(resolvedValue).then(onFulfilled);
-      },
-      catch(onRejected: Function) {
-        return Promise.resolve(resolvedValue).catch(onRejected);
-      },
-    };
-    builder.from = vi.fn().mockReturnValue(builder);
-    builder.where = vi.fn().mockReturnValue(builder);
-    builder.orderBy = vi.fn().mockReturnValue(builder);
-    builder.limit = vi.fn().mockReturnValue(builder);
-    builder.offset = vi.fn().mockResolvedValue(resolvedValue);
-    builder.returning = vi.fn().mockResolvedValue([{
-      id: 1,
-      cigarId: null,
-      authorName: 'Test',
-      authorEmail: 'test@example.com',
-      content: 'Hello',
-      quoteId: null,
-      status: 'pending',
-      createdAt: new Date(),
-    }]);
-    return builder;
+function createChainable<T>(resolvedValue: T) {
+  const builder: Record<string, any> = {
+    then: (onFulfilled: Function) => Promise.resolve(resolvedValue).then(onFulfilled),
+    catch: (onRejected: Function) => Promise.resolve(resolvedValue).catch(onRejected),
   };
+  builder.from = vi.fn().mockReturnValue(builder);
+  builder.where = vi.fn().mockReturnValue(builder);
+  builder.orderBy = vi.fn().mockReturnValue(builder);
+  builder.limit = vi.fn().mockReturnValue(builder);
+  builder.offset = vi.fn().mockResolvedValue(resolvedValue);
+  builder.returning = vi.fn().mockResolvedValue(resolvedValue);
+  return builder;
+}
 
-  const mockSelect = vi.fn().mockImplementation(() => {
-    selectCallIndex++;
-    // First select in guestbook handler is the count query
-    // It expects [{ total: <number> }]
-    if (selectCallIndex % 2 === 1) {
-      // Odd call: could be count query or regular query
-      // We return a builder that resolves to an array with a total field
-      return createChainable([{ total: 0 }]);
-    }
-    return createChainable([]);
-  });
-
-  const mockInsert = vi.fn().mockImplementation((table: any) => {
-    // Return different data based on which table is being inserted into
-    const commentRow = {
-      id: 1,
-      cigarId: null,
-      authorName: 'Test',
-      authorEmail: 'test@example.com',
-      content: 'Hello',
-      quoteId: null,
-      status: 'pending',
-      createdAt: new Date(),
-    };
-    const cigarRow = {
-      id: 1,
-      name: 'Test Cigar',
-      factory: 'Test Factory',
-      era: '80年代',
-      theme: 'classic',
-      imageOriginal: 'originals/test-cigar-abc123.jpg',
-      imageWatermarked: 'watermarked/test-cigar-abc123.jpg',
-      orientation: 'portrait',
-      slug: 'test-cigar-abc123',
-      createdAt: new Date(),
-    };
-    // Default to commentRow for backward compatibility
-    const row = commentRow;
-    return {
-      values: vi.fn().mockReturnValue({
-        returning: vi.fn().mockResolvedValue([row]),
-      }),
-    };
-  });
-
-  const mockUpdate = vi.fn().mockReturnValue({
-    set: vi.fn().mockReturnValue({
-      where: vi.fn().mockResolvedValue(undefined),
-    }),
-  });
-
-  const mockDelete = vi.fn().mockReturnValue({
-    where: vi.fn().mockResolvedValue(undefined),
-  });
+vi.mock('../src/db/index.js', () => {
+  const commentRow = {
+    id: 1, cigarId: null, authorName: 'Test',
+    authorEmail: 'test@example.com', content: 'Hello',
+    quoteId: null, status: 'pending', createdAt: new Date(),
+  };
 
   return {
     db: {
-      select: mockSelect,
-      insert: mockInsert,
-      update: mockUpdate,
-      delete: mockDelete,
+      // 每次 select() 创建一个新 builder，使用当前的 _nextSelectResult 值后自动重置
+      select: vi.fn().mockImplementation(() => createChainable(consumeSelectResult())),
+      insert: vi.fn().mockReturnValue({
+        values: vi.fn().mockReturnValue({
+          returning: vi.fn().mockResolvedValue([commentRow]),
+        }),
+      }),
+      update: vi.fn().mockReturnValue({
+        set: vi.fn().mockReturnValue({
+          where: vi.fn().mockResolvedValue(undefined),
+        }),
+      }),
+      delete: vi.fn().mockReturnValue({
+        where: vi.fn().mockResolvedValue(undefined),
+      }),
     },
     schema: {},
   };

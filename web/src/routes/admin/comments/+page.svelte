@@ -4,6 +4,8 @@
   interface CommentItem {
     id: number;
     cigarId: number | null;
+    cigarName: string | null;
+    cigarSlug: string | null;
     authorName: string;
     authorEmail: string;
     content: string;
@@ -127,12 +129,21 @@
       {#each comments as comment (comment.id)}
         <div class="bg-warm dark:bg-night-card border border-ink/8 dark:border-sea-green/8 rounded-lg p-4">
           <!-- Comment header -->
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center gap-3">
-              <span class="text-sm font-medium text-ink dark:text-sea-green">{comment.authorName}</span>
-              <span class="text-xs text-concrete dark:text-pale">{comment.authorEmail}</span>
+          <div class="flex items-start justify-between mb-2">
+            <div class="flex flex-col gap-0.5">
+              <div class="flex items-center gap-3">
+                <span class="text-sm font-medium text-ink dark:text-sea-green">{comment.authorName}</span>
+                <span class="text-xs text-concrete dark:text-pale">{comment.authorEmail}</span>
+              </div>
+              <span class="text-xs text-concrete/70 dark:text-pale/60 tracking-wide">
+                {#if comment.cigarName}
+                  📦 <a href="/cigar/{comment.cigarSlug}" class="hover:text-moss dark:hover:text-sea-green underline underline-offset-2">《{comment.cigarName}》</a>
+                {:else}
+                  🗣 留言墙
+                {/if}
+              </span>
             </div>
-            <span class="text-xs text-concrete dark:text-pale">{formatDate(comment.createdAt)}</span>
+            <span class="text-xs text-concrete dark:text-pale shrink-0">{formatDate(comment.createdAt)}</span>
           </div>
 
           <!-- Quote block -->
