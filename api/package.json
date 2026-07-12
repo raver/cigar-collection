@@ -1,9 +1,6 @@
 {
   "name": "cigar-api",
   "type": "module",
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
-  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
