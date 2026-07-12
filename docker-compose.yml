@@ -29,14 +29,14 @@ services:
     build: ./web
     restart: unless-stopped
     environment:
-      - ORIGIN=http://localhost # TODO: 部署时替换为实际域名
+      - ORIGIN=https://cigar.bixinxin.com    # 原来是 http://localhost
       - API_TARGET=http://cigar-api:3001
 
   cigar-nginx:
     image: nginx:alpine
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
