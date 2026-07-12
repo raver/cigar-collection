@@ -76,22 +76,26 @@
     <div class="mb-12">
       <h2 class="font-display text-[22px] text-ink dark:text-night-text tracking-[4px] mb-4 pb-2.5 border-b border-border dark:border-night-text/12">关于我</h2>
       <div class="font-serif text-[15px] text-ink-light dark:text-night-text/65 text-justify tracking-[0.3px] leading-[2.2]">
-        <p>一个喜欢收藏旧物的开发者。相信技术不只是工具，也可以用来留住一些柔软的东西。</p>
-        <p class="mt-[1.2em]">这个网站使用了 SvelteKit、Hono、PostgreSQL 和 Cloudflare R2 构建，部署在 Docker 上。</p>
+        <!-- TODO: 在此处添加一张个人照片或与收藏相关的图片 -->
+        <p>一个喜欢收藏旧物的开发者。小时候在路边捡烟盒，长大了在代码里建展馆。相信技术不只是工具，也可以用来留住一些柔软的东西——比如童年的光，比如回不去的街道，比如和哥哥一起低头走路的日子。</p>
+        <p class="mt-[1.2em]">这个网站是我给自己的一份礼物，也是给所有还记得八十年代的人的一份邀请。不为别的，只是想证明：那些被时代遗忘的小东西，值得被好好对待。</p>
       </div>
     </div>
 
+    <!-- 技术栈（bridge） -->
+    <p class="font-serif text-[15px] text-ink-light/60 dark:text-night-text/45 text-center tracking-[2px] mb-6">搭这间小小的线上展柜，用的是这些。</p>
+
     <!-- Tech Stack -->
-    <div class="bg-paper-card dark:bg-night-card rounded-sm border border-border dark:border-[#36332E] px-7 py-7 mt-12 transition-colors duration-500">
+    <div class="bg-paper-card dark:bg-night-card rounded-sm border border-border dark:border-night-border px-7 py-7 mt-12 transition-colors duration-500">
       <h3 class="font-serif font-semibold text-[15px] text-ink-light dark:text-night-text/55 tracking-wider mb-4">技术栈</h3>
       <ul class="flex flex-wrap gap-2.5 list-none">
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">SvelteKit</li>
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Tailwind CSS v4</li>
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Hono</li>
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">PostgreSQL</li>
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Cloudflare R2</li>
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Docker</li>
-        <li class="px-4 py-1.5 border border-border dark:border-[#36332E] rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Nginx</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">SvelteKit</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Tailwind CSS v4</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Hono</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">PostgreSQL</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Cloudflare R2</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Docker</li>
+        <li class="px-4 py-1.5 border border-border dark:border-night-border rounded-sm text-[13px] text-ink-light dark:text-night-text tracking-wider bg-paper dark:bg-night-card transition-colors duration-500">Nginx</li>
       </ul>
     </div>
 

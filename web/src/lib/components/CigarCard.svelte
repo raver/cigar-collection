@@ -6,33 +6,34 @@
 
 <a
   href="/cigar/{cigar.slug}"
-  class="group block bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] p-[14px] pb-[22px] relative
+  class="group block bg-paper-card dark:bg-night-card border border-border dark:border-night-border p-[14px] pb-[22px] relative
     shadow-[2px_3px_8px_rgba(0,0,0,0.05),inset_0_0_80px_rgba(184,134,11,0.03)]
     dark:shadow-[2px_3px_8px_rgba(0,0,0,0.15),inset_0_0_80px_rgba(201,162,39,0.02)]
     rotate-[0.4deg] even:rotate-[-0.5deg]
     hover:rotate-[-1deg] hover:-translate-y-1.5
     hover:shadow-[8px_14px_30px_rgba(0,0,0,0.1),inset_0_0_80px_rgba(184,134,11,0.05)]
     dark:hover:shadow-[8px_14px_30px_rgba(0,0,0,0.25),inset_0_0_80px_rgba(201,162,39,0.04)]
+    focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2
     transition-all duration-600 ease-out"
 >
   <!-- 泛黄胶带 -->
-  <span class="absolute -top-[10px] left-1/2 -translate-x-1/2 -rotate-2 w-[52px] h-[22px]
+  <span aria-hidden="true" class="absolute -top-[10px] left-1/2 -translate-x-1/2 -rotate-2 w-[52px] h-[22px]
     bg-[rgba(232,222,196,0.65)] dark:bg-[rgba(60,55,48,0.55)]
     border border-gold-dark/10 dark:border-gold-light/6
     shadow-[0_1px_2px_rgba(0,0,0,0.05)] z-10"></span>
 
   <!-- 藏书印章 -->
-  <span class="absolute top-[22px] right-[20px] w-[38px] h-[38px] border-2 border-gold/35 rounded-[3px]
+  <span aria-hidden="true" class="absolute top-[22px] right-[20px] w-[38px] h-[38px] border-2 border-gold/35 rounded-[3px]
     flex items-center justify-center text-[10px] tracking-[1px] text-gold/35
     -rotate-12 font-handwritten z-10">旧藏</span>
 
   <!-- 旧污渍（右下角） -->
-  <span class="absolute bottom-[14px] right-[14px] w-[32px] h-[32px] rounded-full
+  <span aria-hidden="true" class="absolute bottom-[14px] right-[14px] w-[32px] h-[32px] rounded-full
     bg-[radial-gradient(circle,rgba(139,105,20,0.06)_0%,transparent_70%)]
     pointer-events-none z-0"></span>
 
   <!-- 图片区 -->
-  <div class="aspect-[3/4] overflow-hidden mb-5 border border-border dark:border-[#36332E] relative
+  <div class="aspect-[3/4] overflow-hidden mb-5 border border-border dark:border-night-border relative
     bg-[linear-gradient(160deg,var(--color-paper-stain)_0%,var(--color-paper-deep)_100%)]
     dark:bg-[linear-gradient(160deg,#2D2B27_0%,#252320_100%)]">
     <!-- 底部渐变遮罩 -->
@@ -49,7 +50,7 @@
   </div>
 
   <!-- 名称 -->
-  <div class="font-handwritten text-[24px] tracking-[3px] text-ink dark:text-night-text mb-1.5 leading-tight">
+  <div class="font-handwritten text-[24px] tracking-[3px] text-ink dark:text-night-text mb-1.5 leading-tight break-words">
     {cigar.name}
   </div>
 

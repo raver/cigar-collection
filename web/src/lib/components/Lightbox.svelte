@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
 
   let {
     src,
@@ -15,8 +15,13 @@
     open?: boolean;
   } = $props();
 
+  let lightboxEl = $state<HTMLElement>();
+  let closeBtn = $state<HTMLButtonElement>();
+  let previousFocus = $state<HTMLElement>();
+
   function close() {
     open = false;
+    previousFocus?.focus();
   }
 
   function onBackdropClick(e: MouseEvent) {
@@ -25,15 +30,42 @@
     }
   }
 
+  function trapFocus(e: KeyboardEvent) {
+    if (e.key !== 'Tab' || !open || !lightboxEl) return;
+    const focusable = lightboxEl.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
   $effect(() => {
-    if (typeof document !== 'undefined') {
-      document.body.style.overflow = open ? 'hidden' : '';
+    if (typeof document === 'undefined') return;
+    if (open) {
+      previousFocus = document.activeElement as HTMLElement;
+      document.body.style.overflow = 'hidden';
+      tick().then(() => closeBtn?.focus());
+    } else {
+      document.body.style.overflow = '';
     }
   });
 
   onMount(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape' && open) close();
+      trapFocus(e);
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -44,17 +76,19 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <!-- svelte-ignore a11y_interactive_supports_focus -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div
+    bind:this={lightboxEl}
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/82"
     onclick={onBackdropClick}
     role="dialog"
     aria-modal="true"
     aria-label="图片放大查看"
-    tabindex="-1"
   >
     <div class="relative max-w-[92vw] md:max-w-[90vw] max-h-[88vh] md:max-h-[85vh] flex flex-col items-center animate-[lightboxIn_0.35s_ease] px-2 md:px-0">
       <!-- Close button -->
       <button
+        bind:this={closeBtn}
         onclick={close}
         class="absolute top-2 right-2 md:top-0 md:-right-12 min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-full bg-white/10 md:bg-transparent border border-white/20 md:border-none text-white/70 md:text-white/60 text-[26px] cursor-pointer leading-none transition-colors duration-300 hover:text-white hover:bg-white/20 md:hover:bg-transparent"
         aria-label="关闭"

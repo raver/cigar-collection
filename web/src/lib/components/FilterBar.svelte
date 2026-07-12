@@ -63,7 +63,7 @@
         type="text"
         placeholder="搜索烟标名称..."
         bind:value={nameFilter}
-        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/35 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-night-border rounded-sm px-3 py-2.5 font-serif text-sm text-ink dark:text-night-text placeholder:text-ink-light/35 dark:placeholder:text-night-text/25 outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light"
       />
     </div>
 
@@ -73,7 +73,7 @@
       <select
         id="filter-factory"
         bind:value={factoryFilter}
-        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-night-border rounded-sm px-3 py-2.5 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] dark:bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23D8CDBA%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
       >
         <option value="">全部</option>
         {#each factories as factory}
@@ -88,7 +88,7 @@
       <select
         id="filter-era"
         bind:value={eraFilter}
-        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-night-border rounded-sm px-3 py-2.5 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] dark:bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23D8CDBA%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
       >
         <option value="">全部</option>
         <option value="80年代">80年代</option>
@@ -104,7 +104,7 @@
       <select
         id="filter-theme"
         bind:value={themeFilter}
-        class="bg-paper-card dark:bg-night-card border border-border dark:border-[#36332E] rounded-sm px-3 py-2 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
+        class="bg-paper-card dark:bg-night-card border border-border dark:border-night-border rounded-sm px-3 py-2.5 pr-8 font-serif text-sm text-ink dark:text-night-text outline-none transition-colors duration-300 focus:border-gold dark:focus:border-gold-light appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235C5650%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] dark:bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23D8CDBA%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center]"
       >
         <option value="">全部</option>
         {#each themes as theme}

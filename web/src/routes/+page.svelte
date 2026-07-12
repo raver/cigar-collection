@@ -99,7 +99,7 @@
 <section class="bg-paper-deep dark:bg-night-header py-5 px-6 pb-16 transition-colors duration-500">
   <div class="max-w-[1100px] mx-auto mb-8">
     <h2 class="font-handwritten text-[32px] text-ink dark:text-night-text tracking-[8px] mb-1.5">随机挑选</h2>
-    <p class="text-[13px] text-ink-light/60 dark:text-night-text/40 tracking-[3px]">每次刷新，都是一次时光回溯</p>
+    <p class="text-[13px] text-ink-light/60 dark:text-night-text/40 tracking-[3px]">每一枚都是亲手捡的、亲手拍的，来自八十、九十年代的街头巷尾</p>
   </div>
 
   <div class="max-w-[1100px] mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 md:gap-8">
