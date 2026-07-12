@@ -21,6 +21,7 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://cigar:${DB_PASSWORD}@postgres:5432/cigar
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
     depends_on:
       postgres:
         condition: service_healthy
