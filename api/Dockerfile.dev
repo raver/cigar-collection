@@ -1,6 +1,11 @@
-FROM node:24-alpine
+FROM node:24-alpine AS pnpm-base
+RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
+
+FROM pnpm-base
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN npm install -g pnpm && pnpm install
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    --mount=type=cache,target=/root/.npm \
+    pnpm install
 EXPOSE 3001
 CMD ["pnpm", "dev"]

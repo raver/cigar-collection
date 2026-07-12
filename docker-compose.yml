@@ -29,8 +29,8 @@ services:
     build: ./web
     restart: unless-stopped
     environment:
-      - ORIGIN=http://localhost
-      - API_INTERNAL_URL=http://cigar-api:3001
+      - ORIGIN=http://localhost # TODO: 部署时替换为实际域名
+      - API_TARGET=http://cigar-api:3001
 
   cigar-nginx:
     image: nginx:alpine

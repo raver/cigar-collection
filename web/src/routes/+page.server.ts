@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 
 // Docker Compose 内部：cigar-web → cigar-api:3001
 // 开发环境：Vite proxy 将 /api 转发到 localhost:3001
-const API_BASE = process.env.API_INTERNAL_URL || 'http://localhost:3001';
+const API_BASE = process.env.API_TARGET || 'http://localhost:3001';
 
 export const load: PageServerLoad = async ({ fetch }) => {
   try {
