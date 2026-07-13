@@ -21,6 +21,7 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-workspace.yaml ./
 COPY --from=builder /app/drizzle.config.ts ./
 COPY --from=builder /app/drizzle ./drizzle
-COPY --from=builder /app/src/db/schema.ts ./src/db/schema.ts
+COPY --from=builder /app/src/db ./src/db
+COPY --from=builder /app/tsconfig.json ./
 EXPOSE 3001
 CMD ["node", "dist/index.js"]
