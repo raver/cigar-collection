@@ -23,7 +23,7 @@ services:
       DATABASE_URL: postgresql://cigar:${DB_PASSWORD}@postgres:5432/cigar
       ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
     ports:
-      - "127.0.0.1:3001:3001"
+      - "127.0.0.1:3101:3001"
     depends_on:
       postgres:
         condition: service_healthy
@@ -35,7 +35,7 @@ services:
       - ORIGIN=https://cigar.bixinxin.com
       - API_TARGET=http://cigar-api:3001
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3100:3000"
 
 volumes:
   postgres_cigar_data:
