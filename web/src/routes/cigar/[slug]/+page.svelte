@@ -51,9 +51,6 @@
 
   // 如果 SSR 没有 neighbors（可能 API 未就绪），客户端 fallback
   onMount(async () => {
-    // 初始化滑动提示状态
-    swipeHintDismissed = sessionStorage.getItem('cigar-swipe-hint-dismissed') === '1';
-
     if (data.neighbors && data.neighbors.total > 0) return; // SSR 已提供
 
     const stored = sessionStorage.getItem('cigar-context');
@@ -129,9 +126,7 @@
   let swipeHintDismissed = $state(false);
 
   function dismissSwipeHint() {
-    if (swipeHintDismissed) return;
     swipeHintDismissed = true;
-    try { sessionStorage.setItem('cigar-swipe-hint-dismissed', '1'); } catch { /* ignore */ }
   }
 
   // 移动端手势
@@ -184,20 +179,20 @@
     <!-- 左：返回 -->
     <button
       onclick={goBack}
-      class="inline-flex items-center gap-1.5 text-sm text-ink-light/70 dark:text-night-text/50
+      class="inline-flex items-center gap-1.5 text-base font-bold text-ink-light/70 dark:text-night-text/50
              tracking-wider hover:text-gold dark:hover:text-gold-light transition-colors duration-300
              cursor-pointer group shrink-0 min-h-[44px]"
       aria-label="返回图库"
     >
-      <span class="text-base leading-none transition-transform duration-300 group-hover:-translate-x-1">←</span>
+      <span class="text-lg leading-none transition-transform duration-300 group-hover:-translate-x-1">←</span>
       <span class="hidden sm:inline">返回</span>
     </button>
 
     <!-- 中：烟标名 + 位置 -->
-    <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide truncate text-center">
+    <span class="font-serif text-base font-bold text-ink dark:text-night-text tracking-wide truncate text-center">
       {data.cigar.name}
       {#if total > 0}
-        <span class="text-ink-light/40 dark:text-night-text/35 text-xs ml-1">({position}/{total})</span>
+        <span class="text-ink-light/40 dark:text-night-text/35 text-sm font-semibold ml-1">({position}/{total})</span>
       {/if}
     </span>
 
@@ -206,7 +201,7 @@
       <button
         onclick={() => goNeighbor(prevSlug)}
         disabled={!prevSlug}
-        class="text-sm text-ink-light/60 dark:text-night-text/40 tracking-wider
+        class="text-base font-bold text-ink-light/60 dark:text-night-text/40 tracking-wider
                hover:text-gold dark:hover:text-gold-light transition-colors duration-300
                disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer min-h-[44px]"
         aria-label="上一个烟标"
@@ -217,7 +212,7 @@
       <button
         onclick={() => goNeighbor(nextSlug)}
         disabled={!nextSlug}
-        class="text-sm text-ink-light/60 dark:text-night-text/40 tracking-wider
+        class="text-base font-bold text-ink-light/60 dark:text-night-text/40 tracking-wider
                hover:text-gold dark:hover:text-gold-light transition-colors duration-300
                disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer min-h-[44px]"
         aria-label="下一个烟标"
@@ -258,10 +253,10 @@
           />
         </div>
 
-        <!-- 移动端滑动提示（首次显示，滑动后消失） -->
+        <!-- 移动端滑动提示（每次访问重新显示，滑动一次后消失） -->
         {#if !swipeHintDismissed && (prevSlug || nextSlug)}
           <p
-            class="md:hidden text-center mt-3 text-xs text-ink-light/30 dark:text-night-text/20 tracking-[3px]"
+            class="md:hidden text-center mt-3 text-sm font-bold text-ink-light/35 dark:text-night-text/25 tracking-[4px]"
             aria-hidden="true"
           >
             ← 左右滑动切换烟标 →
@@ -315,35 +310,35 @@
   <button
     onclick={() => goNeighbor(prevSlug)}
     disabled={!prevSlug}
-    class="flex items-center gap-1 text-sm text-ink-light/70 dark:text-night-text/50
+    class="flex items-center gap-1 text-base font-bold text-ink-light/70 dark:text-night-text/50
            tracking-wider disabled:opacity-25 disabled:cursor-not-allowed
            active:text-gold transition-colors cursor-pointer min-h-[44px] min-w-[44px]"
     aria-label="上一个烟标"
   >
-    <span class="text-base">←</span>
+    <span class="text-lg">←</span>
     <span>上一个</span>
   </button>
 
   <button
     onclick={goBack}
-    class="flex items-center gap-1 text-sm text-ink-light/60 dark:text-night-text/40
+    class="flex items-center gap-1 text-base font-bold text-ink-light/60 dark:text-night-text/40
            tracking-wider active:text-gold transition-colors cursor-pointer min-h-[44px] min-w-[44px]"
     aria-label="返回图库"
   >
-    <span class="text-base">↩</span>
+    <span class="text-lg">↩</span>
     <span>返回</span>
   </button>
 
   <button
     onclick={() => goNeighbor(nextSlug)}
     disabled={!nextSlug}
-    class="flex items-center gap-1 text-sm text-ink-light/70 dark:text-night-text/50
+    class="flex items-center gap-1 text-base font-bold text-ink-light/70 dark:text-night-text/50
            tracking-wider disabled:opacity-25 disabled:cursor-not-allowed
            active:text-gold transition-colors cursor-pointer min-h-[44px] min-w-[44px]"
     aria-label="下一个烟标"
   >
     <span>下一个</span>
-    <span class="text-base">→</span>
+    <span class="text-lg">→</span>
   </button>
 </nav>
 
