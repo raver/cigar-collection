@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-  <title>烟标记忆</title>
+  <!-- 各页面通过自己的 <svelte:head> 设置 title，layout 不设默认值 -->
 </svelte:head>
 
 {#if data.isAdmin}

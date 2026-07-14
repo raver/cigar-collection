@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { page } from '$app/stores';
   import { api, type Cigar } from '$lib/api.js';
   import CigarCard from '$lib/components/CigarCard.svelte';
   import FilterBar from '$lib/components/FilterBar.svelte';
@@ -22,6 +23,23 @@
 
   function handleFiltered(items: Cigar[]) {
     filtered = items;
+  }
+
+  /**
+   * 在跳转详情页前，把当前筛选上下文写入 sessionStorage。
+   * 用事件委托在外层容器上，避免给每个 CigarCard 加 onclick。
+   */
+  function beforeNavigate() {
+    const filters: Record<string, string> = {};
+    for (const [k, v] of $page.url.searchParams) {
+      filters[k] = v;
+    }
+    try {
+      sessionStorage.setItem('cigar-context', JSON.stringify({
+        filters,
+        slugs: filtered.map(c => c.slug),
+      }));
+    } catch { /* quota exceeded, ignore */ }
   }
 </script>
 
@@ -72,7 +90,12 @@
     {:else if filtered.length === 0}
       <div class="text-center py-20 text-ink-light/50 dark:text-night-text/40 text-sm tracking-wider">没有找到匹配的烟标。</div>
     {:else}
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+        onclick={beforeNavigate}
+        onkeydown={(e) => e.key === 'Enter' && beforeNavigate()}
+      >
         {#each filtered as cigar (cigar.id)}
           <CigarCard {cigar} />
         {/each}

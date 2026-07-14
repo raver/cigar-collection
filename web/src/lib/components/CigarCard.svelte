@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import type { Cigar } from '$lib/api.js';
 
   let { cigar }: { cigar: Cigar } = $props();
 </script>
 
 <a
-  href="/cigar/{cigar.slug}"
+  href="/cigar/{cigar.slug}{$page.url.search}"
   class="group block bg-paper-card dark:bg-night-card border border-border dark:border-night-border p-[14px] pb-[22px] relative
     shadow-[2px_3px_8px_rgba(0,0,0,0.05),inset_0_0_80px_rgba(184,134,11,0.03)]
     dark:shadow-[2px_3px_8px_rgba(0,0,0,0.15),inset_0_0_80px_rgba(201,162,39,0.02)]
