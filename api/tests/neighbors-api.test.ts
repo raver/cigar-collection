@@ -117,5 +117,12 @@ describe('Neighbors API', () => {
       const res = await app.request('/api/cigars/cn-bai-hua/neighbors?factory=新郑');
       expect(res.status).toBe(404);
     });
+
+    it('returns 400 for an invalid era filter', async () => {
+      const res = await app.request('/api/cigars/cn-bai-hua/neighbors?era=invalid');
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toBe('Invalid era filter');
+    });
   });
 });

@@ -5,6 +5,13 @@ import { asc, eq, and, ilike, type SQL } from 'drizzle-orm';
 
 const app = new Hono();
 
+const ERA_VALUES = ['80年代', '90年代', '2000年以后', '不详'] as const;
+type Era = (typeof ERA_VALUES)[number];
+
+function isEra(value: string): value is Era {
+  return (ERA_VALUES as readonly string[]).includes(value);
+}
+
 // GET /api/cigars — 所有烟标（前端一次性加载）
 app.get('/', async (c) => {
   const rows = await db.select({
@@ -30,9 +37,14 @@ app.get('/:slug/neighbors', async (c) => {
   const { slug } = c.req.param();
   const { name, factory, era, theme } = c.req.query();
 
+  if (era && !isEra(era)) {
+    return c.json({ error: 'Invalid era filter' }, 400);
+  }
+  const eraFilter: Era | undefined = era && isEra(era) ? era : undefined;
+
   const conditions: SQL[] = [];
   if (factory) conditions.push(eq(cigars.factory, factory));
-  if (era) conditions.push(eq(cigars.era, era));
+  if (eraFilter) conditions.push(eq(cigars.era, eraFilter));
   if (theme) conditions.push(eq(cigars.theme, theme));
   if (name) conditions.push(ilike(cigars.name, `%${name}%`));
 
