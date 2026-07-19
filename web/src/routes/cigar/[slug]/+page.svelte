@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
-  import { onMount } from 'svelte';
-  import Lightbox from '$lib/components/Lightbox.svelte';
-  import CommentList from '$lib/components/CommentList.svelte';
-  import CommentForm from '$lib/components/CommentForm.svelte';
-  import type { Comment, Cigar } from '$lib/api.js';
+  import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
+  import { onMount } from "svelte";
+  import Lightbox from "$lib/components/Lightbox.svelte";
+  import CommentList from "$lib/components/CommentList.svelte";
+  import CommentForm from "$lib/components/CommentForm.svelte";
+  import type { Comment, Cigar } from "$lib/api.js";
 
   interface NeighborInfo {
     slug: string;
@@ -13,7 +13,9 @@
     imageWatermarked: string;
   }
 
-  let { data }: {
+  let {
+    data,
+  }: {
     data: {
       cigar: Cigar;
       comments: Comment[];
@@ -53,20 +55,24 @@
   onMount(async () => {
     if (data.neighbors && data.neighbors.total > 0) return; // SSR 已提供
 
-    const stored = sessionStorage.getItem('cigar-context');
+    const stored = sessionStorage.getItem("cigar-context");
     let slugs: string[] = [];
 
     if (stored) {
       try {
         const ctx = JSON.parse(stored);
         slugs = ctx.slugs || [];
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     }
 
     if (slugs.length === 0) {
       // 调 neighbors API 兜底
       try {
-        const res = await fetch(`/api/cigars/${data.cigar.slug}/neighbors${search}`);
+        const res = await fetch(
+          `/api/cigars/${data.cigar.slug}/neighbors${search}`,
+        );
         if (res.ok) {
           const n = await res.json();
           prevSlug = n.prev?.slug ?? null;
@@ -75,7 +81,9 @@
           position = n.current;
           return;
         }
-      } catch { /* fall through */ }
+      } catch {
+        /* fall through */
+      }
     }
 
     // 用 sessionStorage 快照计算
@@ -89,9 +97,9 @@
   // ── 预加载相邻图片 ──
   function preloadNeighbor(slug: string | null) {
     if (!slug) return;
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.as = 'image';
+    const link = document.createElement("link");
+    link.rel = "prefetch";
+    link.as = "image";
     link.href = `/cigar/${slug}`;
     document.head.appendChild(link);
   }
@@ -117,9 +125,9 @@
   // ── 键盘导航 ──
   function onKeydown(e: KeyboardEvent) {
     const tag = (e.target as HTMLElement)?.tagName;
-    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-    if (e.key === 'ArrowLeft') goNeighbor(prevSlug);
-    if (e.key === 'ArrowRight') goNeighbor(nextSlug);
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    if (e.key === "ArrowLeft") goNeighbor(prevSlug);
+    if (e.key === "ArrowRight") goNeighbor(nextSlug);
   }
 
   // ── 滑动提示 ──
@@ -144,8 +152,14 @@
     const dy = e.changedTouches[0].clientY - touchStartY;
     // 只在水平滑动为主时触发（避免和垂直滚动冲突）
     if (Math.abs(dx) < Math.abs(dy)) return;
-    if (dx < -SWIPE_THRESHOLD && nextSlug) { dismissSwipeHint(); goNeighbor(nextSlug); }
-    if (dx > SWIPE_THRESHOLD && prevSlug) { dismissSwipeHint(); goNeighbor(prevSlug); }
+    if (dx < -SWIPE_THRESHOLD && nextSlug) {
+      dismissSwipeHint();
+      goNeighbor(nextSlug);
+    }
+    if (dx > SWIPE_THRESHOLD && prevSlug) {
+      dismissSwipeHint();
+      goNeighbor(prevSlug);
+    }
   }
 
   function handleQuote(comment: Comment) {
@@ -163,7 +177,11 @@
 
 <svelte:head>
   <title>{data.cigar.name} — 烟标记忆</title>
-  <meta name="description" content="{data.cigar.name}，{data.cigar.factory}，{data.cigar.era}。{data.cigar.theme}主题烟标收藏。" />
+  <meta
+    name="description"
+    content="{data.cigar.name}，{data.cigar.factory}，{data.cigar.era}。{data
+      .cigar.theme}主题烟标收藏。"
+  />
 </svelte:head>
 
 <!-- ═══════════════════════════════════════════ -->
@@ -184,15 +202,23 @@
              cursor-pointer group shrink-0 min-h-[44px]"
       aria-label="返回图库"
     >
-      <span class="text-lg leading-none transition-transform duration-300 group-hover:-translate-x-1">←</span>
+      <span
+        class="text-lg leading-none transition-transform duration-300 group-hover:-translate-x-1"
+        >←</span
+      >
       <span class="hidden sm:inline">返回</span>
     </button>
 
     <!-- 中：烟标名 + 位置 -->
-    <span class="font-serif text-base font-bold text-ink dark:text-night-text tracking-wide truncate text-center">
+    <span
+      class="font-serif text-base font-bold text-ink dark:text-night-text tracking-wide truncate text-center"
+    >
       {data.cigar.name}
       {#if total > 0}
-        <span class="text-ink-light/40 dark:text-night-text/35 text-sm font-semibold ml-1">({position}/{total})</span>
+        <span
+          class="text-ink-light/40 dark:text-night-text/35 text-sm font-semibold ml-1"
+          >({position}/{total})</span
+        >
       {/if}
     </span>
 
@@ -208,7 +234,9 @@
       >
         ← 上一个
       </button>
-      <span class="text-ink-light/20 dark:text-night-text/20 select-none">|</span>
+      <span class="text-ink-light/20 dark:text-night-text/20 select-none"
+        >|</span
+      >
       <button
         onclick={() => goNeighbor(nextSlug)}
         disabled={!nextSlug}
@@ -228,7 +256,6 @@
 <!-- ═══════════════════════════════════════════ -->
 <section class="py-8 md:py-12 px-6">
   <div class="max-w-[900px] mx-auto">
-
     <!-- PC: left image, right info; Mobile: top image, bottom info -->
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Left: Image（移动端绑定了手势） -->
@@ -239,7 +266,12 @@
                  shadow-sm hover:shadow-md transition-shadow duration-300 w-full
                  touch-pan-y"
           onclick={() => (lightboxOpen = true)}
-          onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lightboxOpen = true; } }}
+          onkeydown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              lightboxOpen = true;
+            }
+          }}
           ontouchstart={onTouchStart}
           ontouchend={onTouchEnd}
           role="button"
@@ -248,8 +280,10 @@
         >
           <img
             src={data.cigar.imageWatermarked}
-            alt={data.cigar.name + '烟标'}
-            class="w-full block"
+            alt={data.cigar.name + "烟标"}
+            class="w-full block
+    max-h-[60vh] md:max-h-none
+    object-contain md:object-cover"
           />
         </div>
 
@@ -266,30 +300,58 @@
 
       <!-- Right: Info -->
       <div>
-        <h1 class="font-display text-3xl text-ink dark:text-night-text tracking-[4px] mb-6">
+        <h1
+          class="font-display text-3xl text-ink dark:text-night-text tracking-[4px] mb-6"
+        >
           {data.cigar.name}
         </h1>
 
         <div class="space-y-3 mb-6">
           <div class="flex items-start gap-3">
-            <span class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5">卷烟厂</span>
-            <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide">{data.cigar.factory}</span>
+            <span
+              class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5"
+              >卷烟厂</span
+            >
+            <span
+              class="font-serif text-sm text-ink dark:text-night-text tracking-wide"
+              >{data.cigar.factory}</span
+            >
           </div>
           <div class="flex items-start gap-3">
-            <span class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5">年代</span>
-            <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide">{data.cigar.era}</span>
+            <span
+              class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5"
+              >年代</span
+            >
+            <span
+              class="font-serif text-sm text-ink dark:text-night-text tracking-wide"
+              >{data.cigar.era}</span
+            >
           </div>
           <div class="flex items-start gap-3">
-            <span class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5">主题</span>
-            <span class="font-serif text-sm text-ink dark:text-night-text tracking-wide">{data.cigar.theme}</span>
+            <span
+              class="text-xs text-ink-light/55 dark:text-night-text/40 tracking-wider min-w-[56px] pt-0.5"
+              >主题</span
+            >
+            <span
+              class="font-serif text-sm text-ink dark:text-night-text tracking-wide"
+              >{data.cigar.theme}</span
+            >
           </div>
         </div>
 
         <div class="border-t border-border dark:border-[#36332E] my-6"></div>
 
-        <h3 class="font-serif font-bold text-lg text-ink dark:text-night-text tracking-wider mb-4">留言</h3>
+        <h3
+          class="font-serif font-bold text-lg text-ink dark:text-night-text tracking-wider mb-4"
+        >
+          留言
+        </h3>
         <CommentList comments={data.comments} onQuote={handleQuote} />
-        <CommentForm bind:this={commentForm} cigarId={data.cigar.id} {quoteComment} />
+        <CommentForm
+          bind:this={commentForm}
+          cigarId={data.cigar.id}
+          {quoteComment}
+        />
       </div>
     </div>
   </div>
@@ -344,7 +406,7 @@
 
 <Lightbox
   src={data.cigar.imageWatermarked}
-  alt={data.cigar.name + '烟标'}
+  alt={data.cigar.name + "烟标"}
   name={data.cigar.name}
   meta={`${data.cigar.factory} · ${data.cigar.era}`}
   bind:open={lightboxOpen}
