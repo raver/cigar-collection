@@ -15,7 +15,8 @@ services:
       retries: 5
 
   cigar-api:
-    build: ./api
+    image: ghcr.io/raver/cigar-collection/cigar-api:latest
+    pull_policy: always
     restart: unless-stopped
     env_file: .env
     environment:
@@ -29,7 +30,8 @@ services:
         condition: service_healthy
 
   cigar-web:
-    build: ./web
+    image: ghcr.io/raver/cigar-collection/cigar-web:latest
+    pull_policy: always
     restart: unless-stopped
     environment:
       - ORIGIN=https://cigar.bixinxin.com
