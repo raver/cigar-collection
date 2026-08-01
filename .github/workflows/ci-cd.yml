@@ -30,6 +30,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
+          cache-dependency-path: |
+            api/pnpm-lock.yaml
+            web/pnpm-lock.yaml
 
       - name: Install API deps
         working-directory: api
