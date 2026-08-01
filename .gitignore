@@ -12,10 +12,4 @@ dist/
 /.vscode
 /.impeccable
 
-about.html
-gallery.html
-guestbook.html
-homepage-v3.html
-docs/homepage-v2.html
-docs/superpowers/plans/2026-04-18-cigar-collection-website.md
-docs/memo.md
+/docs
