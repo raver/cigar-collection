@@ -17,6 +17,8 @@ jobs:
   # ── Job 1: 测试 + 构建检查 ──
   test:
     runs-on: ubuntu-latest
+    env:
+      SESSION_SECRET: test-session-secret-for-ci
     steps:
       - uses: actions/checkout@v4
 
