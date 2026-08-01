@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import app from '../src/index.js';
+import app from '../src/app.js';
 import { setSelectResult } from './setup.js';
 
 describe('Public API', () => {

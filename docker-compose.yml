@@ -21,6 +21,7 @@ services:
     env_file: .env
     environment:
       NODE_ENV: production
+      ADMIN_ORIGIN: https://cigar.bixinxin.com
       DATABASE_URL: postgresql://cigar:${DB_PASSWORD}@postgres:5432/cigar
       ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
     ports:
@@ -36,6 +37,7 @@ services:
     environment:
       - ORIGIN=https://cigar.bixinxin.com
       - API_TARGET=http://cigar-api:3001
+      - PUBLIC_SITE_URL=https://cigar.bixinxin.com
     ports:
       - "127.0.0.1:3100:3000"
 

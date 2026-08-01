@@ -18,7 +18,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      NODE_ENV: test
       SESSION_SECRET: test-session-secret-for-ci
+      DATABASE_URL: postgresql://test:test@localhost:5432/testdb
+      ADMIN_ORIGIN: http://localhost:5173
+
+      # 当前是可选（代码里仅 warning）
+      R2_ACCOUNT_ID: dummy
+      R2_ACCESS_KEY_ID: dummy
+      R2_SECRET_ACCESS_KEY: dummy
     steps:
       - uses: actions/checkout@v4
 

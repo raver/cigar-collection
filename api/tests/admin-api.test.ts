@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import app from '../src/index.js';
+import app from '../src/app.js';
 
 describe('Admin API', () => {
   it('POST /admin/api/login with missing fields returns error', async () => {
